@@ -1,6 +1,6 @@
 
 <head>
-    
+
 </head>
 <div class="container">
     <h1 class="mb-4">Liste des Mutuelles</h1>
@@ -28,4 +28,3 @@
         </table>
     @endif
 </div>
-@endsection
