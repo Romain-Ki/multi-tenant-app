@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mutuelles', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->autoIncrement()->primary();
             $table->string('nom');
+            $table->string('password');
             $table->string('email_contact')->nullable();
             $table->timestamps();
         });

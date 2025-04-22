@@ -15,7 +15,9 @@ class Mutuelles extends Model
 
     protected $keyType = 'string'; // UUID
 
-    protected $fillable = ['nom', 'email_contact'];
+    protected $hidden = ['password'];
+
+    protected $fillable = ['id', 'nom', 'password', 'email_contact'];
 
     public function clients()
     {
