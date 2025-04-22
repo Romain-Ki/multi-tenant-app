@@ -9,8 +9,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/mutuelles', [AffichageDataController::class, 'mutelles'])->name('mutuelles');
-
 Route::middleware('auth')->get('/mutuelle/home', function () {
     return view('mutuelles.home');
 })->name('mutuelles.home');
