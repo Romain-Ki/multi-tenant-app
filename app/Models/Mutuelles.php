@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mutuelle extends Model
+class Mutuelles extends Model
 {
     use HasFactory;
+
+    protected $table = 'mutuelles';
 
     public $incrementing = false;
 
@@ -17,11 +19,11 @@ class Mutuelle extends Model
 
     public function clients()
     {
-        return $this->hasMany(Client::class);
+        return $this->hasMany(Clients::class);
     }
 
     public function offres()
     {
-        return $this->hasMany(OffreSante::class);
+        return $this->hasMany(OffreSantes::class);
     }
 }

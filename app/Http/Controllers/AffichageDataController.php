@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mutuelle;
+use App\Models\Mutuelles;
 
 class AffichageDataController extends Controller
 {
     public function mutelles()
     {
-        $mutuelles = Mutuelle::all();
+        $mutuelles = Mutuelles::all();
 
         return view('affichageData.mutelles', compact('mutuelles'));
     }

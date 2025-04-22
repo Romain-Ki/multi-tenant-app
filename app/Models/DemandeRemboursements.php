@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DemandeRemboursement extends Model
+class DemandeRemboursements extends Model
 {
     use HasFactory;
+
+    protected $table = 'demandes_remboursements';
 
     public $incrementing = false;
 
@@ -20,12 +22,12 @@ class DemandeRemboursement extends Model
 
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Clients::class);
     }
 
     public function offre()
     {
-        return $this->belongsTo(OffreSante::class);
+        return $this->belongsTo(OffreSantes::class);
     }
 
     public function echanges()

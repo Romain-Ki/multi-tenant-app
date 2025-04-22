@@ -9,6 +9,8 @@ class EchangeDossier extends Model
 {
     use HasFactory;
 
+    protected $table = 'echanges_dossier';
+
     public $incrementing = false;
 
     protected $keyType = 'string';
@@ -20,6 +22,6 @@ class EchangeDossier extends Model
 
     public function demande()
     {
-        return $this->belongsTo(DemandeRemboursement::class, 'demande_id');
+        return $this->belongsTo(DemandeRemboursements::class, 'demande_id');
     }
 }

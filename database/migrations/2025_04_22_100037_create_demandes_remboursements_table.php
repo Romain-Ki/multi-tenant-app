@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('demandes_remboursement', function (Blueprint $table) {
+        Schema::create('demandes_remboursements', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('client_id');
             $table->uuid('offre_id')->nullable();
@@ -22,10 +22,11 @@ return new class extends Migration
             $table->text('justificatif_path')->nullable();
             $table->binary('justificatif_encrypted')->nullable();
             $table->text('commentaire')->nullable();
+            $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('offre_id')->references('id')->on('offres_sante')->onDelete('set null');
+            $table->foreign('offre_id')->references('id')->on('offre_santes')->onDelete('set null');
         });
     }
 

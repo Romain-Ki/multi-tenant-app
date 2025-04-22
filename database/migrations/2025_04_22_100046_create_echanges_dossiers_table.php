@@ -19,8 +19,10 @@ return new class extends Migration
             $table->text('piece_jointe_path')->nullable();
             $table->binary('piece_jointe_encrypted')->nullable();
             $table->timestamp('date_echange')->useCurrent();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
 
-            $table->foreign('demande_id')->references('id')->on('demandes_remboursement')->onDelete('cascade');
+            $table->foreign('demande_id')->references('id')->on('demandes_remboursements')->onDelete('cascade');
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('echanges_dossiers');
+        Schema::dropIfExists('echanges_dossier');
     }
 };
