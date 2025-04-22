@@ -59,3 +59,72 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Getting Started
+
+After cloning this Laravel project from a Git repository, follow these steps to get it up and running on your local machine:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Romain-Ki/multi-tenant-app.git
+cd your-laravel-app
+```
+
+### 2. Install PHP Dependencies
+Make sure you have Composer installed. Then run:
+```bash
+composer install
+```
+
+### 3. Copy the Environment File
+Create your local environment file from the example:
+```bash
+cp .env.example .env
+```
+
+### 4. Generate the Application Key
+```bash
+php artisan key:generate
+```
+
+### 5. Configure the `.env` File
+Edit the `.env` file and set your local database credentials:
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
+
+### 6. Create the Database
+Create the database manually in MySQL (via phpMyAdmin, MySQL CLI, or GUI tools like DBeaver).
+
+### 7. Run the Migrations
+```bash
+php artisan migrate
+```
+
+### 8. (Optional) Seed the Database
+If the project provides seeders:
+```bash
+php artisan db:seed
+```
+
+### 9. Serve the Application
+```bash
+php artisan serve
+```
+Open your browser and visit [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+### 10. (Optional) Install Frontend Dependencies
+If the project uses Vite or Laravel Mix:
+```bash
+npm install
+npm run dev
+```
+
+---
+
+You’re now ready to start working with the application! 🚀
