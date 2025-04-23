@@ -31,7 +31,7 @@
                 </div>
             @endif
             
-            <form method="POST" action="{{ route('mutuelle.login') }}" id="login-form">
+            <form method="POST" action="{{ route('client.login') }}" id="login-form">
                 @csrf
 
                 <!-- Email -->

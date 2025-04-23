@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'mutuelles',
         ],
+
+        'clients' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
     ],
 
     /*
@@ -68,6 +73,11 @@ return [
         'mutuelles' => [
             'driver' => 'eloquent',
             'model' => App\Models\Mutuelles::class,
+        ],
+
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Clients::class,
         ],
 
         // 'users' => [

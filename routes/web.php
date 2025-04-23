@@ -1,8 +1,4 @@
 <?php
-<<<<<<< HEAD
-
-=======
->>>>>>> 5c8d06defbde068c176eaa5441fee1b273aa825a
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AffichageDataController;
 use App\Http\Controllers\MutuelleController;
@@ -30,7 +26,7 @@ Route::get('/mutuelle/logout', function () {
 })->name('mutuelle.logout');
 Route::get('/client/login', [ClientController::class, 'showLoginForm'])->name('client.login');
 
-Route::post('/client/login', [ClientController::class, 'login'])->name('client.login.perform');
+Route::post('/client/login', [ClientController::class, 'login'])->name('client.login');
 
 Route::get('/register', [ClientController::class, 'create'])->name('clients.register'); // formulaire
 Route::post('/register', [ClientController::class, 'register'])->name('clients.store');

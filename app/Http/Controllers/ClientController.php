@@ -51,5 +51,27 @@ class ClientController extends Controller
         return redirect()->back()->with('status', 'Compte client créé avec succès !');
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email_conact', 'nom');
+
+        $mutuelle = Clients::where('email_contact', $credentials['email_contact'])->first();
+
+        if (! $mutuelle || ! $mutuelle ->nom != $credentials['nom'] || ! $mutuelle ->email != $credentials['email_contact']) {
+            return redirect()->route('client.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
+        }
+
+        // Optionnel : Générer un token ici si tu utilises Sanctum ou JWT
+
+        if ($mutuelle) {
+            Auth::guard('client')->login($mutuelle); // ✅ Authentification réelle
+
+            return redirect()->route('mutuelle.login')->with('status', 'Réussi connard');
+        } else {
+            return redirect()->route('client.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
+        }
+
+    }
+
 }
 
