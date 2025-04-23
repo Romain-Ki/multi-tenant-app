@@ -1,0 +1,63 @@
+/* Style global */
+body {
+    font-family: 'Roboto', sans-serif;
+    overflow-y: hidden;
+}
+
+/* Animation sur les formulaires */
+#auth-card {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Bouton d'action (connexion/inscription) */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #00408f;
+    transform: scale(0.98);
+}
+
+/* Transition pour basculer entre les formulaires */
+#register-form,
+#login-form {
+    transition: all 0.5s ease-in-out;
+}
+
+/* Formulaire de connexion/inscription */
+.form-control {
+    border-radius: 30px;
+}
+
+.card {
+    margin-top: 10%;
+    border-radius: 20px;
+}
+
+.card-header {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

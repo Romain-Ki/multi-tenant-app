@@ -6,6 +6,7 @@ use App\Models\Mutuelles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class MutuelleController extends Controller
 {
@@ -20,17 +21,20 @@ class MutuelleController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return redirect()->route('mutuelle.login')->with('error', 'La création du compte a échoué. Veuillez réessayer.');
+        }
+        if (Mutuelles::where('nom', '=', $request->nom)->first()) {
+            return redirect()->route('mutuelle.login')->with('error', 'La création du compte a échoué. Veuillez réessayer.');
         }
 
         $mutuelle = Mutuelles::create([
-            'id' => $request->nom.'0001',
+            'id' => Str::uuid(),
             'nom' => $request->nom,
             'email_contact' => $request->email_contact,
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Compte mutuelle créé avec succès', 'mutuelle' => $mutuelle], 201);
+        return redirect()->route('mutuelle.login')->with('status', 'Compte créé avec succès !');
     }
 
     // ✅ Connexion
@@ -41,11 +45,11 @@ class MutuelleController extends Controller
         $mutuelle = Mutuelles::where('email_contact', $credentials['email_contact'])->first();
 
         if (! $mutuelle || ! Hash::check($credentials['password'], $mutuelle->password)) {
-            return response()->json(['error' => 'Email ou mot de passe invalide'], 401);
+            return redirect()->route('mutuelle.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
         }
 
         // Optionnel : Générer un token ici si tu utilises Sanctum ou JWT
 
-        return response()->json(['message' => 'Connexion réussie', 'mutuelle' => $mutuelle]);
+        return redirect()->route('mutuelle.login')->with('status', 'Connecté !');
     }
 }

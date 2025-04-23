@@ -15,18 +15,30 @@
         </div>
     </header>
 
-    <main class="d-flex justify-content-center align-items-center min-vh-100">
+    <main class="d-flex justify-content-center align-items-center">
         <div class="card shadow-lg rounded-4 w-50 p-5" id="auth-card">
             <h2 class="text-center mb-4" id="form-title">Se connecter</h2>
+                    
+            @if(session('status'))
+                <div class="alert alert-success text-center">
+                    {{ session('status') }}
+                </div>
+            @endif
 
+            @if(session('error'))
+                <div class="alert alert-danger text-center">
+                    {{ session('error') }}
+                </div>
+            @endif
+            
             <form method="POST" action="{{ route('mutuelle.login') }}" id="login-form">
                 @csrf
 
                 <!-- Email -->
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" required class="form-control @error('email') is-invalid @enderror">
-                    @error('email')
+                    <label for="email_contact" class="form-label">Email</label>
+                    <input type="email" id="email_contact" name="email_contact" value="{{ old('email_contact') }}" required class="form-control @error('email_contact') is-invalid @enderror">
+                    @error('email_contact')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -56,17 +68,17 @@
 
                 <!-- Nom de la mutuelle -->
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nom de la Mutuelle</label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}" required class="form-control @error('name') is-invalid @enderror">
-                    @error('name')
+                    <label for="nom" class="form-label">Nom de la Mutuelle</label>
+                    <input type="text" id="nom" name="nom" value="{{ old('nom') }}" required class="form-control @error('nom') is-invalid @enderror">
+                    @error('nom')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <!-- Email -->
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" required class="form-control @error('email') is-invalid @enderror">
+                    <label for="email_contact" class="form-label">Email</label>
+                    <input type="email" id="email_contact" name="email_contact" value="{{ old('email_contact') }}" required class="form-control @error('email_contact') is-invalid @enderror">
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

@@ -15,8 +15,7 @@ Route::middleware('auth')->get('/mutuelle/home', function () {
     return view('mutuelles.home');
 })->name('mutuelles.home');
 
-Route::view('/mutuelle/register', 'mutuelles.register');
-Route::view('/mutuelle/login', 'mutuelles/login');
+Route::view('/mutuelle/login', 'mutuelles/login')->name('mutuelles.home');
 
 Route::post('/mutuelle/register', [MutuelleController::class, 'register'])->name('mutuelle.register');
 Route::post('/mutuelle/login', [MutuelleController::class, 'login'])->name('mutuelle.login');
