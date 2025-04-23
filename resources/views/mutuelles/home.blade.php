@@ -12,7 +12,7 @@
         <h1 class="text-2xl font-bold">Tableau de bord de {{ auth()->user()->nom }}</h1>
         <nav>
             <a href="" class="text-white hover:underline mr-4">Mon Profil</a>
-            <a href="" class="text-white hover:underline">Déconnexion</a>
+            <a href="{{ route('mutuelle.logout') }}" class="text-white hover:underline">Déconnexion</a>
         </nav>
     </header>
 

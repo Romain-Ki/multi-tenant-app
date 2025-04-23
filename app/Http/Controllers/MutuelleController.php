@@ -60,4 +60,14 @@ class MutuelleController extends Controller
         }
 
     }
+
+    public function loginView()
+    {
+        return view('mutuelles.login');
+    }
+
+    public function homeView()
+    {
+        return view('mutuelles.home');
+    }
 }
