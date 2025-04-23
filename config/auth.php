@@ -36,9 +36,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'mutuelles' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'mutuelles',
         ],
     ],
 
@@ -63,6 +63,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        'mutuelles' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Mutuelles::class,
         ],
 
         // 'users' => [
