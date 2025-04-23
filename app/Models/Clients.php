@@ -16,6 +16,7 @@ class Clients extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'mutuelle_id', 'nom', 'prenom', 'numero_securite_sociale_encrypted',
         'email', 'telephone', 'adresse', 'rib_encrypted', 'historique_medical_encrypted',
     ];
