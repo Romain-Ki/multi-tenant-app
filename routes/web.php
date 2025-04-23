@@ -11,11 +11,13 @@ Route::get('/', function () {
 
 // Route::get('/mutuelles', [AffichageDataController::class, 'mutelles'])->name('mutuelles');
 
-Route::middleware('auth')->get('/mutuelle/home', function () {
+Route::middleware('auth:mutuelles')->get('/mutuelle/home', function () {
     return view('mutuelles.home');
-})->name('mutuelles.home');
+})->name('mutuelle.home');
 
-Route::view('/mutuelle/login', 'mutuelles/login')->name('mutuelles.home');
+Route::get('/mutuelle/login', function () {
+    return view('mutuelles.login');
+})->name('mutuelle.login');
 
 Route::post('/mutuelle/register', [MutuelleController::class, 'register'])->name('mutuelle.register');
 Route::post('/mutuelle/login', [MutuelleController::class, 'login'])->name('mutuelle.login');

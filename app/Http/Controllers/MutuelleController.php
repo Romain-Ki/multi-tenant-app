@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mutuelles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -50,6 +51,13 @@ class MutuelleController extends Controller
 
         // Optionnel : Générer un token ici si tu utilises Sanctum ou JWT
 
-        return redirect()->route('mutuelle.login')->with('status', 'Connecté !');
+        if ($mutuelle) {
+            Auth::guard('mutuelles')->login($mutuelle); // ✅ Authentification réelle
+
+            return redirect()->route('mutuelle.home');
+        } else {
+            return redirect()->route('mutuelle.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
+        }
+
     }
 }

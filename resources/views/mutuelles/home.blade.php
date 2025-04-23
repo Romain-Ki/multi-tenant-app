@@ -11,8 +11,8 @@
     <header class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
         <h1 class="text-2xl font-bold">Tableau de bord de {{ auth()->user()->nom }}</h1>
         <nav>
-            <a href="{{ route('mutuelle.profile') }}" class="text-white hover:underline mr-4">Mon Profil</a>
-            <a href="{{ route('mutuelle.logout') }}" class="text-white hover:underline">Déconnexion</a>
+            <a href="" class="text-white hover:underline mr-4">Mon Profil</a>
+            <a href="" class="text-white hover:underline">Déconnexion</a>
         </nav>
     </header>
 
@@ -24,21 +24,21 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="font-semibold text-lg mb-2">Offres de Remboursement</h3>
                 <p>Consulter vos offres de remboursement actuelles.</p>
-                <a href="{{ route('mutuelle.offres.index') }}" class="text-blue-500 hover:underline">Voir les offres</a>
+                <a href="" class="text-blue-500 hover:underline">Voir les offres</a>
             </div>
 
             <!-- Demandes en attente -->
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="font-semibold text-lg mb-2">Demandes en attente</h3>
                 <p>Vérifier les demandes de remboursement en attente.</p>
-                <a href="{{ route('mutuelle.demandes.index') }}" class="text-blue-500 hover:underline">Voir les demandes</a>
+                <a href="" class="text-blue-500 hover:underline">Voir les demandes</a>
             </div>
 
             <!-- Statistiques -->
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="font-semibold text-lg mb-2">Statistiques</h3>
                 <p>Consulter vos statistiques de remboursement.</p>
-                <a href="{{ route('mutuelle.statistiques') }}" class="text-blue-500 hover:underline">Voir les statistiques</a>
+                <a href="" class="text-blue-500 hover:underline">Voir les statistiques</a>
             </div>
         </div>
     </main>
