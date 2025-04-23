@@ -56,9 +56,10 @@
                 <i class="fas fa-building me-2"></i> Connexion Mutuelle
             </a>
 
-            <a href="" class="btn btn-success btn-lg w-100 animate__animated animate__pulse animate__infinite">
+            <a href="{{ route('client.login') }}" class="btn btn-success btn-lg w-100 animate__animated animate__pulse animate__infinite">
                 <i class="fas fa-user me-2"></i> Connexion Client
             </a>
+
         </div>
     </div>
 </div>
