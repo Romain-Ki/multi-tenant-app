@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5c8d06defbde068c176eaa5441fee1b273aa825a
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AffichageDataController;
 use App\Http\Controllers\MutuelleController;
