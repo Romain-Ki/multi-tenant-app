@@ -3,6 +3,7 @@
 use App\Http\Controllers\AffichageDataController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\MutuelleController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
