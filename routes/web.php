@@ -13,7 +13,6 @@ Route::get('/mutuelles', [AffichageDataController::class, 'mutelles'])->name('mu
 
 Route::middleware('auth:mutuelles')
     ->get('/mutuelle/home', [MutuelleController::class, 'homeView'])->name('mutuelle.home');
-
 Route::get('/mutuelle/login', [MutuelleController::class, 'loginView'])->name('mutuelles.login');
 
 Route::get('/mutuelle/logout', function () {
@@ -26,6 +25,14 @@ Route::get('/client/login', [ClientController::class, 'showLoginForm'])->name('c
 
 Route::get('/register', [ClientController::class, 'create'])->name('clients.register'); // formulaire
 
+Route::get('/client/logout', function () {
+    Auth::guard('clients')->logout();
+
+    return redirect('/');
+})->name('client.logout');
+
+Route::middleware('auth:clients')
+    ->get('/client/home', [ClientController::class, 'homeView'])->name('client.home');
 Route::get('/mutuelles/create', [MutuelleController::class, 'create'])->name('mutuelles.create');
 //Route::post('/mutuelles', [MutuelleController::class, 'store'])->name('mutuelles.store');
 Route::get('/mutuelles/{mutuelle}', [MutuelleController::class, 'show'])->name('mutuelles.show');
@@ -45,3 +52,6 @@ Route::middleware('auth:mutuelles')->group(function () {
 })->name('mutuelles.update');
 
 Route::post('/client/login', [ClientController::class, 'login'])->name('client.login');
+Route::middleware('auth:mutuelles')
+    ->get('/mutuelle/searchClient/{uuid}', [MutuelleController::class, 'searchClientByNumeroSocial'])->name('mutuelle.searchClientByNumeroSocial');
+Route::get('/mutuelle/logout', [MutuelleController::class, 'logout'])->name('mutuelle.logout');
