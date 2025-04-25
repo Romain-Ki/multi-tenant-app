@@ -79,14 +79,12 @@ class ClientController extends Controller
     public function homeView()
     {
         $client = Auth::guard('clients')->user();
-    
+
         // Décryptage des données sensibles
         $client->numero_securite_sociale = Crypt::decryptString($client->numero_securite_sociale_encrypted);
         $client->rib = Crypt::decryptString($client->rib_encrypted);
         $client->historique_medical = Crypt::decryptString($client->historique_medical_encrypted ?? '');
-    
+
         return view('clients.dashboard', compact('client'));
     }
-    
-
 }
