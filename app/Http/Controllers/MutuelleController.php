@@ -101,7 +101,10 @@ class MutuelleController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('mutuelles')->with('success', 'Mutuelle mise à jour avec succès.');
+        return response()->json([
+            'message' => 'Mutuelle mise à jour avec succès.',
+            'mutuelle' => $mutuelle
+        ], 200);
     }
 
     /**
@@ -109,7 +112,16 @@ class MutuelleController extends Controller
      */
     public function destroy(Mutuelles $mutuelle)
     {
+        if (auth('mutuelles')->id() !== $mutuelle->id) {
+            return response()->json(['error' => 'Action non autorisée.'], 403);
+        }
+
         $mutuelle->delete();
-        return redirect()->route('mutuelles')->with('success', 'Mutuelle supprimée avec succès.');
+
+        return response()->json([
+            'message' => 'Mutuelle supprimée avec succès.',
+            'mutuelle_id' => $mutuelle->id
+        ], 200);
     }
+
 }
