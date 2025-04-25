@@ -92,11 +92,13 @@ class MutuelleController extends Controller
         $request->validate([
             'nom' => 'required|string|max:255',
             'email_contact' => 'nullable|email|max:255',
+            'password' => 'required|string|min:8',
         ]);
 
         $mutuelle->update([
             'nom' => $request->nom,
             'email_contact' => $request->email_contact,
+            'password' => $request-> password,
         ]);
 
         return redirect()->route('mutuelles')->with('success', 'Mutuelle mise à jour avec succès.');

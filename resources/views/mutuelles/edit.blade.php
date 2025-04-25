@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Modifier la mutuelle</h1>
+        <h1>Modifier votre mutuelle</h1>
 
         <form action="{{ route('mutuelles.update', $mutuelle) }}" method="POST">
             @csrf
@@ -16,6 +16,14 @@
             <div class="mb-3">
                 <label for="email_contact" class="form-label">Email de contact</label>
                 <input type="email" class="form-control" id="email_contact" name="email_contact" value="{{ old('email_contact', $mutuelle->email_contact) }}">
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" id="password" name="password" value="{{ old('password', $mutuelle->password) }}" required class="form-control @error('password') is-invalid @enderror">
+                @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <button type="submit" class="btn btn-primary">Mettre à jour</button>
