@@ -62,11 +62,15 @@ class MutuelleController extends Controller
 
     }
 
-    public function searchClientByNumeroSocial($uuid)
+    public function searchClientByNumeroSocial($numero)
     {
-        $client = Clients::where('id', $uuid)->first();
+        $numero_encrypted = hash('sha256', $numero);
+        $client = Clients::where('numero_securite_sociale_hashed', 'like', $numero_encrypted)->first();
+        if (! $client) {
+            abort(403, "Le client n'existe pas !");
+        }
 
-        if (! $client || $client->mutuelle_id !== Auth::user()->id) {
+        if ($client->mutuelle_id !== Auth::user()->id) {
             abort(403, 'Accès non autorisé');
         }
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->binary('numero_securite_sociale_encrypted');
+            $table->binary('numero_securite_sociale_hashed');
             $table->string('email')->nullable();
             $table->string('password');
             $table->string('telephone')->nullable();

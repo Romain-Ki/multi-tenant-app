@@ -53,5 +53,5 @@ Route::middleware('auth:mutuelles')->group(function () {
 
 Route::post('/client/login', [ClientController::class, 'login'])->name('client.login');
 Route::middleware('auth:mutuelles')
-    ->get('/mutuelle/searchClient/{uuid}', [MutuelleController::class, 'searchClientByNumeroSocial'])->name('mutuelle.searchClientByNumeroSocial');
+    ->get('/mutuelle/searchClient/{numero}', [MutuelleController::class, 'searchClientByNumeroSocial'])->name('mutuelle.searchClientByNumeroSocial');
 Route::get('/mutuelle/logout', [MutuelleController::class, 'logout'])->name('mutuelle.logout');
