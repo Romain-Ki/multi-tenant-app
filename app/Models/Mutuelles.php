@@ -21,7 +21,7 @@ class Mutuelles extends Authenticatable
 
     public function clients()
     {
-        return $this->hasMany(Clients::class);
+        return $this->hasMany(Clients::class, 'mutuelle_id');
     }
 
     public function offres()

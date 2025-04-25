@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 class MutuelleController extends Controller
 {
@@ -70,4 +71,19 @@ class MutuelleController extends Controller
     {
         return view('mutuelles.home');
     }
+
+    public function listeClients()
+{
+    $mutuelle = Auth::guard('mutuelles')->user();
+
+    $clients = $mutuelle->clients;
+
+    foreach ($clients as $client) {
+        $client->numero_securite_sociale = Crypt::decryptString($client->numero_securite_sociale_encrypted);
+        $client->rib = Crypt::decryptString($client->rib_encrypted);
+        $client->historique_medical = Crypt::decryptString($client->historique_medical_encrypted ?? '') ?? 'Non renseigné';
+    }
+
+    return view('mutuelles.client', compact('clients'));
+}
 }

@@ -40,3 +40,7 @@ Route::get('/client/logout', function () {
 Route::middleware('auth:clients')
     ->get('/client/home', [ClientController::class, 'homeView'])->name('client.home');
 
+
+Route::middleware(['auth:mutuelles'])->group(function () {
+    Route::get('/mutuelle/clients', [MutuelleController::class, 'listeClients'])->name('mutuelle.clients');
+});

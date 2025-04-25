@@ -29,9 +29,8 @@
 
             <!-- Demandes en attente -->
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="font-semibold text-lg mb-2">Demandes en attente</h3>
-                <p>Vérifier les demandes de remboursement en attente.</p>
-                <a href="" class="text-blue-500 hover:underline">Voir les demandes</a>
+                <h3 class="font-semibold text-lg mb-2">Clients</h3>
+                <a href="{{ route('mutuelle.clients') }}" class="text-blue-500 hover:underline">Voir les clients</a>
             </div>
 
             <!-- Statistiques -->
