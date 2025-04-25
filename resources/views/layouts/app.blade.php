@@ -9,11 +9,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('mutuelles') }}">Mutuelles</a>
+<header class="bg-primary text-white py-5 mb-5">
+    <div class="container text-center">
+        <h1 class="display-4">Accédez à votre espace <a class="navbar-brand" href="{{ route('mutuelle.home') }}">Mutuelles</a></h1>
     </div>
-</nav>
+</header>
+{{--<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">--}}
+{{--    <div class="container">--}}
+{{--        <a class="navbar-brand" href="{{ route('mutuelles') }}">Mutuelles</a>--}}
+{{--        --}}
+{{--    </div>--}}
+{{--</nav>--}}
 
 <div class="container">
     {{-- Affichage des messages flash --}}
