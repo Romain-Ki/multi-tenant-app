@@ -19,8 +19,8 @@ class Clients extends Authenticatable
 
     protected $fillable = [
         'id',
-        'mutuelle_id', 'nom', 'prenom', 'numero_securite_sociale_encrypted',
-        'email','password', 'telephone', 'adresse', 'rib_encrypted', 'historique_medical_encrypted',
+        'mutuelle_id', 'nom', 'prenom', 'numero_securite_sociale_encrypted', 'numero_securite_sociale_hashed',
+        'email', 'password', 'telephone', 'adresse', 'rib_encrypted', 'historique_medical_encrypted',
     ];
 
     public function mutuelle()

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Mutuelles;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class MutuelleSeeder extends Seeder
@@ -13,15 +14,8 @@ class MutuelleSeeder extends Seeder
         Mutuelles::create([
             'id' => Str::uuid(),
             'nom' => 'Mutuelle Santé Plus',
-            'password' => 'test1',
-            'email_contact' => 'contact@santeplus.fr',
-        ]);
-
-        Mutuelles::create([
-            'id' => Str::uuid(),
-            'nom' => 'Mutuelle Bien-Être',
-            'password' => 'test2',
-            'email_contact' => 'info@bienetre.fr',
+            'password' => Hash::make('1234567890'),
+            'email_contact' => 'test1@test1.com',
         ]);
     }
 }

@@ -17,7 +17,7 @@ Route::get('/mutuelle/login', [MutuelleController::class, 'loginView'])->name('m
 Route::post('/mutuelle/register', [MutuelleController::class, 'register'])->name('mutuelle.register');
 Route::post('/mutuelle/login', [MutuelleController::class, 'login'])->name('mutuelle.login');
 Route::middleware('auth:mutuelles')
-    ->get('/mutuelle/searchClient/{uuid}', [MutuelleController::class, 'searchClientByNumeroSocial'])->name('mutuelle.searchClientByNumeroSocial');
+    ->get('/mutuelle/searchClient/{numero}', [MutuelleController::class, 'searchClientByNumeroSocial'])->name('mutuelle.searchClientByNumeroSocial');
 Route::get('/mutuelle/logout', [MutuelleController::class, 'logout'])->name('mutuelle.logout');
 
 Route::get('/client/login', [ClientController::class, 'showLoginForm'])->name('client.login');

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clients;
+use App\Models\Mutuelles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Clients;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\Mutuelles;
 
 class ClientController extends Controller
 {
@@ -16,7 +16,8 @@ class ClientController extends Controller
     public function showLoginForm()
     {
         $mutuelles = Mutuelles::all();
-        return view('clients.login', compact("mutuelles"));
+
+        return view('clients.login', compact('mutuelles'));
     }
 
     public function register(Request $request)
@@ -40,6 +41,7 @@ class ClientController extends Controller
             'prenom' => $validated['prenom'],
             'mutuelle_id' => $request->mutuelle_id,
             'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']),
+            'numero_securite_sociale_hashed' => hash('sha256', $validated['numero_securite_sociale_encrypted']),
             'email' => $validated['email'],
             'password' => Hash::make($request->password),
             'telephone' => $validated['telephone'],
@@ -58,7 +60,7 @@ class ClientController extends Controller
         $credentials = $request->only('email_contact', 'password');
 
         $client = Clients::where('email', $credentials['email_contact'])->first();
-        if (! $client || ! Hash::check($credentials['password'], $client->password)|| $client ->email != $credentials['email_contact']) {
+        if (! $client || ! Hash::check($credentials['password'], $client->password) || $client->email != $credentials['email_contact']) {
             return redirect()->route('client.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
         }
 
@@ -73,6 +75,4 @@ class ClientController extends Controller
         }
 
     }
-
 }
-

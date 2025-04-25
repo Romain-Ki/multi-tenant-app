@@ -31,7 +31,7 @@
 
         <!-- Barre de recherche -->
         <div class="mb-5">
-            <form id="searchForm" method="GET" action="{{ route('mutuelle.searchClientByNumeroSocial', ['uuid' => 'placeholder']) }}">
+            <form id="searchForm" method="GET" action="{{ route('mutuelle.searchClientByNumeroSocial', ['numero' => 'placeholder']) }}">
                 <div class="input-group">
                     <input type="text" class="form-control" id="searchInput" placeholder="Rechercher un client par numéro de sécurité sociale..." aria-label="Recherche" required>
                     <button class="btn btn-outline-primary" type="submit">Rechercher</button>
@@ -91,7 +91,7 @@
             const input = document.getElementById('searchInput').value.trim();
     
             if (input.length > 0) {
-                const route = "{{ route('mutuelle.searchClientByNumeroSocial', ['uuid' => 'REPLACE_UUID']) }}";
+                const route = "{{ route('mutuelle.searchClientByNumeroSocial', ['numero' => 'REPLACE_UUID']) }}";
                 const redirectUrl = route.replace('REPLACE_UUID', encodeURIComponent(input));
                 window.location.href = redirectUrl;
             }
