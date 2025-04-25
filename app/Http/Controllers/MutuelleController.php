@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clients;
 use App\Models\Mutuelles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,17 @@ class MutuelleController extends Controller
 
     }
 
+    public function searchClientByNumeroSocial($uuid)
+    {
+        $client = Clients::where('id', $uuid)->first();
+
+        if (! $client || $client->mutuelle_id !== Auth::user()->id) {
+            abort(403, 'Accès non autorisé');
+        }
+
+        return view('mutuelles.searchResult', compact('client'));
+    }
+
     public function loginView()
     {
         return view('mutuelles.login');
@@ -69,6 +81,13 @@ class MutuelleController extends Controller
     public function homeView()
     {
         return view('mutuelles.home');
+    }
+
+    public function logout()
+    {
+        Auth::guard('mutuelles')->logout();
+
+        return redirect('/');
     }
 
     public function show(Mutuelles $mutuelle)
@@ -110,6 +129,7 @@ class MutuelleController extends Controller
     public function destroy(Mutuelles $mutuelle)
     {
         $mutuelle->delete();
+
         return redirect()->route('mutuelles')->with('success', 'Mutuelle supprimée avec succès.');
     }
 }
