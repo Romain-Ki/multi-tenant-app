@@ -11,14 +11,14 @@
     <header class="bg-blue-600 text-white py-4 px-6 flex justify-between items-center">
         <h1 class="text-2xl font-bold">Tableau de bord de {{ auth()->user()->nom }}</h1>
         <nav>
-            <a href="" class="text-white hover:underline mr-4">Mon Profil</a>
+            <a href="{{ route('mutuelles.show', auth()->user()->id) }}" class="text-white hover:underline mr-4">Mon Profil</a>
             <a href="{{ route('mutuelle.logout') }}" class="text-white hover:underline">Déconnexion</a>
         </nav>
     </header>
 
     <main class="p-6">
         <h2 class="text-xl font-semibold mb-4">Bienvenue, {{ auth()->user()->nom }} !</h2>
-        
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Offre de Remboursement -->
             <div class="bg-white p-6 rounded-lg shadow-md">
