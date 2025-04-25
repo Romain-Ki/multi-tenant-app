@@ -98,7 +98,7 @@ class MutuelleController extends Controller
         $mutuelle->update([
             'nom' => $request->nom,
             'email_contact' => $request->email_contact,
-            'password' => $request-> password,
+            'password' => Hash::make($request->password),
         ]);
 
         return redirect()->route('mutuelles')->with('success', 'Mutuelle mise à jour avec succès.');
