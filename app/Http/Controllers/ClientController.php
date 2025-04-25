@@ -67,12 +67,25 @@ class ClientController extends Controller
         if ($client) {
             Auth::guard('clients')->login($client); // ✅ Authentification réelle
 
-            return redirect()->route('client.login')->with('status', 'Réussi connard');
+            return redirect()->route('client.home')->with('status', 'Réussi connard');
         } else {
             return redirect()->route('client.login')->with('error', 'La connection a échoué: nothing.');
         }
 
     }
+
+    public function homeView()
+    {
+        $client = Auth::guard('clients')->user();
+    
+        // Décryptage des données sensibles
+        $client->numero_securite_sociale = Crypt::decryptString($client->numero_securite_sociale_encrypted);
+        $client->rib = Crypt::decryptString($client->rib_encrypted);
+        $client->historique_medical = Crypt::decryptString($client->historique_medical_encrypted ?? '');
+    
+        return view('clients.dashboard', compact('client'));
+    }
+    
 
 }
 

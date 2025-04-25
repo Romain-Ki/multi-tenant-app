@@ -30,3 +30,13 @@ Route::post('/client/login', [ClientController::class, 'login'])->name('client.l
 
 Route::get('/register', [ClientController::class, 'create'])->name('clients.register'); // formulaire
 Route::post('/register', [ClientController::class, 'register'])->name('clients.store');
+
+Route::get('/client/logout', function () {
+    Auth::guard('clients')->logout();
+
+    return redirect('/');
+})->name('client.logout');
+
+Route::middleware('auth:clients')
+    ->get('/client/home', [ClientController::class, 'homeView'])->name('client.home');
+
