@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Clients extends Model
+class Clients extends Authenticatable
 {
     use HasFactory;
 
@@ -15,10 +15,12 @@ class Clients extends Model
 
     protected $keyType = 'string';
 
+    protected $hidden = ['password'];
+
     protected $fillable = [
         'id',
         'mutuelle_id', 'nom', 'prenom', 'numero_securite_sociale_encrypted',
-        'email', 'telephone', 'adresse', 'rib_encrypted', 'historique_medical_encrypted',
+        'email','password', 'telephone', 'adresse', 'rib_encrypted', 'historique_medical_encrypted',
     ];
 
     public function mutuelle()

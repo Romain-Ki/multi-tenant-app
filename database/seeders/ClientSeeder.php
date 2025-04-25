@@ -21,6 +21,7 @@ class ClientSeeder extends Seeder
             'prenom' => 'Alice',
             'numero_securite_sociale_encrypted' => Crypt::encrypt('1234567890123'),
             'email' => 'alice.dupont@mail.fr',
+            'password' => 'ydqyegdygdysefgy',
             'telephone' => '0612345678',
             'adresse' => '12 rue de la Santé, Paris',
             'rib_encrypted' => Crypt::encrypt('FR7612345987650123456789014'),
