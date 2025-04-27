@@ -87,4 +87,39 @@ class ClientController extends Controller
 
         return view('clients.dashboard', compact('client'));
     }
+    public function editProfile()
+    {
+        $client = Auth::guard('clients')->user(); // récupère le client connecté
+        return view('clients.edit-profile', compact('client'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $client = Auth::guard('clients')->user();
+
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'telephone' => 'required|string|max:20',
+            'adresse' => 'required|string|max:255',
+        ]);
+
+        $client->update($validated);
+
+        return redirect()->route('client.home')->with('status', 'Profil mis à jour avec succès !');
+    }
+
+    // Supprimer (Delete) un utilisateur
+    public function destroy($id)
+    {
+        $client = Clients::find($id);
+
+        if (!$client) {
+            return response()->json(['message' => 'Hmm client introuvable en base'], 404);
+        }
+
+        $client->delete();
+
+        return response()->json(['message' => 'Utilisateur supprimé']);
+    }
 }

@@ -59,3 +59,9 @@ Route::get('/mutuelle/logout', [MutuelleController::class, 'logout'])->name('mut
 Route::middleware(['auth:mutuelles'])->group(function () {
     Route::get('/mutuelle/clients', [MutuelleController::class, 'listeClients'])->name('mutuelle.clients');
 });
+
+Route::middleware('auth:clients')->group(function () {
+    Route::get('/client/edit', [ClientController::class, 'editProfile'])->name('client.editProfile');
+    Route::put('/client/profile', [ClientController::class, 'updateProfile'])->name('client.updateProfile');
+    Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('client.deleteProfile');
+});
