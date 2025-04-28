@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ClientController extends Controller
 {
+    // Affiche le formulaire de connexion
     public function showLoginForm()
     {
         $mutuelles = Mutuelles::all();
@@ -34,24 +35,47 @@ class ClientController extends Controller
             'adresse' => 'required|string|max:255',
             'rib_encrypted' => 'required|string|max:34',
             'historique_medical_encrypted' => 'nullable|string',
+        ], [
+            'email.unique' => 'Cet email est déjà utilisé.',
         ]);
 
         try {
             $mutuelle = Mutuelles::findOrFail($validated['mutuelle_id']);
 
-            $client = Clients::create([
+            $numero_hash = hash('sha256', $validated['numero_securite_sociale_encrypted']);
+            $rib_hash = hash('sha256', $validated['rib_encrypted']);
+
+            if (Clients::where('numero_securite_sociale_hashed', $numero_hash)->exists()) {
+                if ($request->wantsJson()) {
+                    return response()->json(['message' => 'Ce numéro de sécurité sociale est déjà utilisé.'], Response::HTTP_CONFLICT);
+                }
+                return redirect()->back()->withErrors('Ce numéro de sécurité sociale est déjà utilisé.');
+            }
+
+            if (Clients::where('rib_hashed', $rib_hash)->exists()) {
+                if ($request->wantsJson()) {
+                    return response()->json(['message' => 'Ce RIB est déjà enregistré.'], Response::HTTP_CONFLICT);
+                }
+                return redirect()->back()->withErrors('Ce RIB est déjà enregistré.');
+            }
+
+            $client = new Clients([
                 'id' => Str::uuid(),
                 'nom' => $validated['nom'],
                 'prenom' => $validated['prenom'],
                 'mutuelle_id' => $validated['mutuelle_id'],
                 'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']),
+                'numero_securite_sociale_hashed' => $numero_hash,
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'telephone' => $validated['telephone'],
                 'adresse' => $validated['adresse'],
                 'rib_encrypted' => Crypt::encryptString($validated['rib_encrypted']),
+                'rib_hashed' => $rib_hash,
                 'historique_medical_encrypted' => Crypt::encryptString($validated['historique_medical_encrypted'] ?? ''),
             ]);
+
+            $client->save(); // ➔ très important
 
             if ($request->wantsJson()) {
                 return response()->json([
@@ -77,6 +101,7 @@ class ClientController extends Controller
             return redirect()->back()->withErrors('Erreur lors de la création du compte client. Veuillez réessayer.');
         }
     }
+
 
     public function login(Request $request)
     {
@@ -184,15 +209,18 @@ class ClientController extends Controller
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
-        $client->update([
-            'prenom' => $validated['prenom'],
-            'nom' => $validated['nom'],
-            'email' => $validated['email'],
-            'telephone' => $validated['telephone'],
-            'adresse' => $validated['adresse'],
-            'mutuelle_id' => $validated['mutuelle_id'],
-            'password' => !empty($validated['password']) ? Hash::make($validated['password']) : $client->password,
-        ]);
+        // Mise à jour des informations de base
+        $client->prenom = $validated['prenom'];
+        $client->nom = $validated['nom'];
+        $client->email = $validated['email'];
+        $client->telephone = $validated['telephone'];
+        $client->adresse = $validated['adresse'];
+        $client->mutuelle_id = $validated['mutuelle_id'];
+
+        // Mise à jour du mot de passe seulement si un nouveau mot de passe est saisi
+        if (! empty($validated['password'])) {
+            $client->password = Hash::make($validated['password']);
+        }
 
         if ($request->wantsJson()) {
             return response()->json([

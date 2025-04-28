@@ -1,130 +1,240 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Documentation du projet Mutuelles & Clients
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-## Getting Started
-
-After cloning this Laravel project from a Git repository, follow these steps to get it up and running on your local machine:
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Romain-Ki/multi-tenant-app.git
-cd your-laravel-app
-```
-
-### 2. Install PHP Dependencies
-Make sure you have Composer installed. Then run:
-```bash
-composer install
-```
-
-### 3. Copy the Environment File
-Create your local environment file from the example:
-```bash
-cp .env.example .env
-```
-
-### 4. Generate the Application Key
-```bash
-php artisan key:generate
-```
-
-### 5. Configure the `.env` File
-Edit the `.env` file and set your local database credentials:
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_database_user
-DB_PASSWORD=your_database_password
-```
-
-### 6. Create the Database
-Create the database manually in MySQL (via phpMyAdmin, MySQL CLI, or GUI tools like DBeaver).
-
-### 7. Run the Migrations
-```bash
-php artisan migrate
-```
-
-### 8. (Optional) Seed the Database
-If the project provides seeders:
-```bash
-php artisan db:seed
-```
-
-### 9. Serve the Application
-```bash
-php artisan serve
-```
-Open your browser and visit [http://127.0.0.1:8000](http://127.0.0.1:8000)
-
-### 10. (Optional) Install Frontend Dependencies
-If the project uses Vite or Laravel Mix:
-```bash
-npm install
-npm run dev
-```
+Ce projet est une application Laravel permettant aux **mutuelles** et aux **clients** de gérer leur espace personnel, leurs remboursements et leurs échanges sécurisés.
 
 ---
 
-You’re now ready to start working with the application! 🚀
+## Sommaire
+- [Prérequis](#prérequis)
+- [Routes disponibles](#routes)
+  - [Routes publiques](#routes-générales)
+  - [Routes client](#routes-clients)
+  - [Routes mutuelle](#routes-mutuelles)
+- [Base de données](#base-de-données)
+  - [mutuelles](#mutuelles)
+  - [users](#users)
+  - [clients](#clients)
+  - [offre_santes](#offre_santes)
+  - [demandes_remboursements](#demandes_remboursements)
+  - [echanges_dossier](#echanges_dossier)
+  - [Autres tables](#autres-tables)
+- [Middleware et Authentification](#middleware-et-authentification)
+
+---
+
+## Prérequis
+- PHP >= 8.0
+- Composer
+- MySQL ou SQLite
+- Node.js et NPM (pour les assets front-end)
+
+
+# Routes
+
+## ✅ Routes générales
+
+| Type de requête | URL               | Donnée d'entrée | Donnée de sortie          |
+|-----------------|-------------------|-----------------|---------------------------|
+| GET             | `/`               | -               | HTML                      |
+| GET             | `/mutuelles`      | -               | JSON [{ "id": "UUID", "nom": "String"}, ...] |
+
+---
+
+## ✅ Routes Mutuelles
+
+| Type de requête | URL                               | Donnée d'entrée  | Donnée de sortie         | Protéger ?                                  |
+|-----------------|-----------------------------------|------------------|--------------------------|---------------------------------------------|
+| GET             | `/mutuelle/home`                  | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
+| GET             | `/mutuelle/login`                 | -                | HTML                     | - |
+| POST            | `/mutuelle/login`                 | email_contact: "string", password: "string" | HTML         | - |
+| GET             | `/mutuelle/logout`                | -                | HTML                     | - |
+| GET             | `/mutuelles/create`               | -                | HTML                     | - |
+| POST            | `/mutuelles/create`               | nom: "string", email_contact: "string", password: "string", password_confirmation: "string" | HTML                     | - |
+| GET             | `/mutuelles/{mutuelle_uuid}`      | -                | JSON (Mutuelle)          | - |
+| GET             | `/mutuelles/{mutuelle_uuid}/edit` | -                | HTML                     | - |
+| PUT             | `/mutuelles/{mutuelle_uuid}`      | nom: "string", email_contact: "string", password: "string" | HTML       | *(protégé par middleware `auth:mutuelles`)*  |
+| DELETE          | `/mutuelles/{mutuelle}`           | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)*  |
+| GET             | `/mutuelle/searchClient/{numero}` | -                | JSON (Client)            | *(protégé par middleware `auth:mutuelles`)* |
+| GET             | `/mutuelle/clients`               | -                | JSON ([Client], ...)     | *(protégé par middleware `auth:mutuelles`)* |
+
+---
+
+## ✅ Routes Clients
+
+| Type de requête | URL                      | Donnée d'entrée                       | Donnée de sortie          | Protéger ?                                |
+|-----------------|--------------------------|---------------------------------------|---------------------------|-------------------------------------------|
+| GET             | `/client/home`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| GET             | `/client/edit`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| PUT             | `/client/profile`        | nom: "string", prenom: "string", email: "string", telephone: "string", adresse: "string", rib_encrypted: "string", historique_medical_encrypted: "string" | HTML                      | *(protégé par middleware `auth:clients`)* |
+| DELETE          | `/client/{client_id}`    | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| GET             | `/client/login`          | -                                     | HTML                      | - |
+| POST            | `/client/login`          | email: "string", password: "string"   | HTML                      | - |
+| GET             | `/client/logout`         | -                                     | HTML                      | - |
+
+---
+
+## 📥 Détail des formulaires
+
+### 🔹 POST Login (Mutuelle / Client)
+- **Champs attendus :**
+  - `email_contact` (string)
+  - `password` (string)
+
+### 🔹 POST Register (Mutuelle)
+- **Champs attendus :**
+  - `nom` (string)
+  - `email_contact` (email unique)
+  - `password` (string, min:6)
+  - `password_confirmation` (string)
+
+### 🔹 POST Register (Client)
+- **Champs attendus :**
+  - `nom` (string)
+  - `prenom` (string)
+  - `numero_securite_sociale_encrypted` (string)
+  - `email` (email unique)
+  - `password` (string, min:6)
+  - `password_confirmation` (string)
+  - `telephone` (string)
+  - `adresse` (string)
+  - `rib_encrypted` (string)
+  - `historique_medical_encrypted` (nullable string)
+  - `mutuelle_id` (UUID)
+
+---
+
+## 🔍 Remarques techniques
+
+- Toutes les routes **GET** rendent du **HTML** ou du **JSON** en mettant le header `accept`:`application/json` dans la requête.
+- L'accès à certaines routes est **protégé par les middlewares** `auth:mutuelles` ou `auth:clients` dependant du type d'authentification.
+
+## Base de données
+
+### `mutuelles`
+
+Contient les informations sur les mutuelles partenaires.
+
+| Champ            | Type        | Description                                |
+|:-----------------|:------------|:-------------------------------------------|
+| id               | CHAR(36)    | Identifiant unique UUID                   |
+| nom              | VARCHAR(255)| Nom de la mutuelle                        |
+| password         | VARCHAR(255)| Mot de passe hashé                        |
+| email_contact    | VARCHAR(255)| Email de contact                          |
+| created_at       | TIMESTAMP   | Date de création                          |
+| updated_at       | TIMESTAMP   | Date de dernière mise à jour              |
+
+---
+
+### `users`
+
+Table standard Laravel pour les utilisateurs administratifs (non clients/mutuelles).
+
+| Champ            | Type        | Description                                |
+|:-----------------|:------------|:-------------------------------------------|
+| id               | BIGINT      | Identifiant auto-incrémenté                |
+| name             | VARCHAR(255)| Nom d'utilisateur                         |
+| email            | VARCHAR(255)| Email unique                              |
+| password         | VARCHAR(255)| Mot de passe hashé                        |
+| email_verified_at| TIMESTAMP   | Vérification d'email                      |
+| remember_token   | VARCHAR(100)| Jeton "remember me"                        |
+| created_at       | TIMESTAMP   | Date de création                          |
+| updated_at       | TIMESTAMP   | Date de dernière mise à jour              |
+
+---
+
+### `clients`
+
+Contient les informations sur les clients assurés.
+
+| Champ                                 | Type        | Description                                    |
+|:--------------------------------------|:------------|:-----------------------------------------------|
+| id                                    | CHAR(36)    | Identifiant unique UUID                        |
+| mutuelle_id                           | CHAR(36)    | Clé étrangère liée à la table `mutuelles`      |
+| nom                                   | VARCHAR(255)| Nom du client                                 |
+| prenom                                | VARCHAR(255)| Prénom du client                              |
+| numero_securite_sociale_encrypted     | BLOB        | Numéro de Sécurité Sociale (crypté)            |
+| numero_securite_sociale_hashed        | BLOB        | Hash du Numéro de Sécurité Sociale             |
+| email                                 | VARCHAR(255)| Email du client (facultatif)                  |
+| password                              | VARCHAR(255)| Mot de passe hashé                            |
+| telephone                             | VARCHAR(255)| Téléphone (facultatif)                        |
+| adresse                               | TEXT        | Adresse (facultatif)                          |
+| rib_encrypted                         | BLOB        | RIB bancaire crypté (facultatif)               |
+| historique_medical_encrypted          | BLOB        | Historique médical crypté (facultatif)         |
+| created_at                            | TIMESTAMP   | Date de création                              |
+| updated_at                            | TIMESTAMP   | Date de dernière mise à jour                  |
+
+---
+
+### `offre_santes`
+
+Liste des offres de soins proposées par les mutuelles.
+
+| Champ             | Type         | Description                                  |
+|:------------------|:-------------|:---------------------------------------------|
+| id                | CHAR(36)     | Identifiant unique UUID                      |
+| mutuelle_id       | CHAR(36)     | Clé étrangère liée à `mutuelles`              |
+| titre             | VARCHAR(255) | Titre de l'offre                             |
+| description       | TEXT         | Description facultative                     |
+| type_soin         | VARCHAR(255) | Type de soin (ex: optique, dentaire, etc.)    |
+| remboursement_max | DECIMAL(10,2)| Montant maximal de remboursement             |
+| date_debut        | DATE         | Date de début de validité                    |
+| date_fin          | DATE         | Date de fin de validité                      |
+| created_at        | TIMESTAMP    | Date de création                             |
+| updated_at        | TIMESTAMP    | Date de dernière mise à jour                 |
+
+---
+
+### `demandes_remboursements`
+
+Demandes de remboursement faites par les clients.
+
+| Champ                | Type          | Description                                |
+|:---------------------|:--------------|:-------------------------------------------|
+| id                   | CHAR(36)      | Identifiant unique UUID                   |
+| client_id            | CHAR(36)      | Clé étrangère vers `clients`               |
+| offre_id             | CHAR(36)      | Clé étrangère vers `offre_santes` (nullable)|
+| statut               | ENUM          | Statut (`en_attente`, `en_cours`, `validee`, `refusee`) |
+| montant              | DECIMAL(10,2) | Montant demandé                           |
+| date_demande         | DATE          | Date de la demande                        |
+| type_soin            | VARCHAR(255)  | Type de soin                              |
+| justificatif_path    | TEXT          | Chemin vers justificatif (fichier stocké)  |
+| justificatif_encrypted| BLOB         | Justificatif crypté                       |
+| commentaire          | TEXT          | Commentaires éventuels                    |
+| created_at           | TIMESTAMP     | Date de création                          |
+| updated_at           | TIMESTAMP     | Date de dernière mise à jour              |
+
+---
+
+### `echanges_dossier`
+
+Échanges liés aux demandes de remboursement (chat, pièces jointes, etc.).
+
+| Champ                 | Type        | Description                                |
+|:----------------------|:------------|:-------------------------------------------|
+| id                    | CHAR(36)    | Identifiant unique UUID                   |
+| demande_id            | CHAR(36)    | Clé étrangère vers `demandes_remboursements` |
+| auteur                | VARCHAR(255)| Auteur du message                         |
+| message               | TEXT        | Contenu du message                        |
+| piece_jointe_path     | TEXT        | Chemin de la pièce jointe                  |
+| piece_jointe_encrypted| BLOB        | Pièce jointe cryptée                      |
+| date_echange          | TIMESTAMP   | Date de l'échange                         |
+| created_at            | TIMESTAMP   | Date de création                          |
+| updated_at            | TIMESTAMP   | Date de dernière mise à jour              |
+
+---
+
+### Autres tables
+
+- `sessions` : Gestion des sessions utilisateurs.
+- `password_reset_tokens` : Gestion des tokens de réinitialisation de mot de passe.
+
+---
+
+## Middleware et Authentification
+
+- **auth:clients** : Protège les routes pour les clients connectés.
+- **auth:mutuelles** : Protège les routes pour les mutuelles connectées.
+- **Guards personnalisés** Laravel (`clients`, `mutuelles`) pour une séparation stricte des espaces utilisateurs.
+
+---
+
