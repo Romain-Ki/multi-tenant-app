@@ -36,18 +36,18 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 
 | Type de requête | URL                               | Donnée d'entrée  | Donnée de sortie         |
 |-----------------|-----------------------------------|------------------|--------------------------|
+| GET             | `/mutuelle/home`                  | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
 | GET             | `/mutuelle/login`                 | -                | HTML                     | - |
 | POST            | `/mutuelle/login`                 | voir détail      | HTML                     | - |
+| GET             | `/mutuelle/logout`                | -                | HTML                     | - |
 | GET             | `/mutuelles/create`               | -                | HTML                     | - |
 | POST            | `/mutuelles/create`               | voir détail      | HTML                     | - |
-| GET             | `/mutuelle/logout`                | -                | HTML                     | - |
-| GET             | `/mutuelle/home`                  | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
-| GET             | `/mutuelles/{mutuelle_uuid}`      | -                | HTML                     | - |
+| GET             | `/mutuelles/{mutuelle_uuid}`      | -                | JSON (Mutuelle)          | - |
 | GET             | `/mutuelles/{mutuelle_uuid}/edit` | -                | HTML                     | - |
 | PUT             | `/mutuelles/{mutuelle_uuid}`      | -                | HTML                     | - |
 | DELETE          | `/mutuelles/{mutuelle}`           | -                | HTML                     | - |
-| GET             | `/mutuelle/searchClient/{numero}` | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
-| GET             | `/mutuelle/clients`               | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
+| GET             | `/mutuelle/searchClient/{numero}` | -                | JSON (Client)            | *(protégé par middleware `auth:mutuelles`)* |
+| GET             | `/mutuelle/clients`               | -                | JSON ([Client], ...)     | *(protégé par middleware `auth:mutuelles`)* |
 
 ---
 
@@ -60,6 +60,8 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 | GET             | `/register`              | -                                     | HTML                      | - |
 | POST            | `/register`              | voir détail                           | HTML                      | - |
 | GET             | `/client/home`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| GET             | `/client/logout`         | -                                     | HTML                      | - |
+| GET             | `/client/logout`         | -                                     | HTML                      | - |
 | GET             | `/client/logout`         | -                                     | HTML                      | - |
 
 ---

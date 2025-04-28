@@ -94,12 +94,12 @@ class ClientController extends Controller
 
         return redirect('/');
     }
+
     public function editProfile()
     {
         $client = Auth::guard('clients')->user();
 
         $mutuelles = Mutuelles::all();
-
 
         return view('clients.edit-profile', compact('client', 'mutuelles'));
     }
@@ -127,7 +127,7 @@ class ClientController extends Controller
         $client->mutuelle_id = $validated['mutuelle_id'];
 
         // Mise à jour du mot de passe seulement si un nouveau mot de passe est saisi
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $client->password = Hash::make($validated['password']);
         }
 
@@ -141,7 +141,7 @@ class ClientController extends Controller
     {
         $client = Clients::find($id);
 
-        if (!$client) {
+        if (! $client) {
             return response()->json(['message' => 'Hmm client introuvable en base'], 404);
         }
 
