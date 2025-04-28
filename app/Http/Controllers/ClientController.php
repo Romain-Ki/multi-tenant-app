@@ -87,4 +87,11 @@ class ClientController extends Controller
 
         return view('clients.dashboard', compact('client'));
     }
+
+    public function logout()
+    {
+        Auth::guard('clients')->logout();
+
+        return redirect('/');
+    }
 }
