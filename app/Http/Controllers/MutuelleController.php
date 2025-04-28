@@ -18,7 +18,7 @@ class MutuelleController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255|unique:mutuelles,nom',
             'email_contact' => 'required|email|unique:mutuelles,email_contact',
             'password' => 'required|string|min:6|confirmed',
         ]);
