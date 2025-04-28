@@ -69,6 +69,8 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 | DELETE          | `/client/{client_id}`    | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
 | GET             | `/client/login`          | -                                     | HTML                      | - |
 | POST            | `/client/login`          | email: "string", password: "string"   | HTML                      | - |
+| POST            | `/client/register`       | [voir détail](#-post-register-client) | HTML                      | - |
+| GET             | `/client/register`       |                                       | HTML                      | - |
 | GET             | `/client/logout`         | -                                     | HTML                      | - |
 
 ---
