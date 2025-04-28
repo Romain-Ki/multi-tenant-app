@@ -8,15 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class MutuelleController extends Controller
 {
-    // ✅ Enregistrement
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'nom' => 'required|string|max:255',
             'email_contact' => 'required|email|unique:mutuelles,email_contact',
@@ -24,10 +23,17 @@ class MutuelleController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('mutuelle.login')->with('error', 'La création du compte a échoué. Veuillez réessayer.');
+            if ($request->wantsJson()) {
+                return response()->json(['errors' => $validator->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+            return redirect()->route('mutuelle.login')->with('error', 'La création du compte a échoué.');
         }
-        if (Mutuelles::where('nom', '=', $request->nom)->first()) {
-            return redirect()->route('mutuelle.login')->with('error', 'La création du compte a échoué. Veuillez réessayer.');
+
+        if (Mutuelles::where('nom', '=', $request->nom)->exists()) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Nom de mutuelle déjà utilisé.'], Response::HTTP_CONFLICT);
+            }
+            return redirect()->route('mutuelle.login')->with('error', 'La création du compte a échoué.');
         }
 
         $mutuelle = Mutuelles::create([
@@ -37,10 +43,13 @@ class MutuelleController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Compte mutuelle créé avec succès.', 'mutuelle_id' => $mutuelle->id], Response::HTTP_CREATED);
+        }
+
         return redirect()->route('mutuelle.login')->with('status', 'Compte créé avec succès !');
     }
 
-    // ✅ Connexion
     public function login(Request $request)
     {
         $credentials = $request->only('email_contact', 'password');
@@ -48,31 +57,51 @@ class MutuelleController extends Controller
         $mutuelle = Mutuelles::where('email_contact', $credentials['email_contact'])->first();
 
         if (! $mutuelle || ! Hash::check($credentials['password'], $mutuelle->password)) {
-            return redirect()->route('mutuelle.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'La connexion a échoué : mauvais email ou mot de passe.'], Response::HTTP_UNAUTHORIZED);
+            }
+            return redirect()->route('mutuelle.login')->with('error', 'La connexion a échoué.');
         }
 
-        // Optionnel : Générer un token ici si tu utilises Sanctum ou JWT
+        Auth::guard('mutuelles')->login($mutuelle);
 
-        if ($mutuelle) {
-            Auth::guard('mutuelles')->login($mutuelle); // ✅ Authentification réelle
-
-            return redirect()->route('mutuelle.home');
-        } else {
-            return redirect()->route('mutuelle.login')->with('error', 'La connection a échoué: mauvais mail ou mot de passe.');
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Connexion réussie.', 'mutuelle_id' => $mutuelle->id], Response::HTTP_OK);
         }
 
+        return redirect()->route('mutuelle.home');
     }
 
-    public function searchClientByNumeroSocial($numero)
+    public function searchClientByNumeroSocial(Request $request, $numero)
     {
-        $numero_encrypted = hash('sha256', $numero);
-        $client = Clients::where('numero_securite_sociale_hashed', 'like', $numero_encrypted)->first();
-        if (! $client) {
-            abort(403, "Le client n'existe pas !");
+        $mutuelle = Auth::guard('mutuelles')->user();
+
+        if (!$mutuelle) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Accès refusé.'], Response::HTTP_FORBIDDEN);
+            }
+            abort(Response::HTTP_FORBIDDEN, 'Accès refusé.');
         }
 
-        if ($client->mutuelle_id !== Auth::user()->id) {
-            abort(403, 'Accès non autorisé');
+        $numero_encrypted = hash('sha256', $numero);
+        $client = Clients::where('numero_securite_sociale_hashed', 'like', $numero_encrypted)->first();
+
+        if (! $client) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Client inexistant.'], Response::HTTP_NOT_FOUND);
+            }
+            abort(Response::HTTP_NOT_FOUND, "Le client n'existe pas !");
+        }
+
+        if ($client->mutuelle_id !== $mutuelle->id) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Accès non autorisé.'], Response::HTTP_FORBIDDEN);
+            }
+            abort(Response::HTTP_FORBIDDEN, 'Accès non autorisé');
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json(['client' => $client], Response::HTTP_OK);
         }
 
         return view('mutuelles.searchResult', compact('client'));
@@ -83,34 +112,50 @@ class MutuelleController extends Controller
         return view('mutuelles.login');
     }
 
-    public function homeView()
+    public function homeView(Request $request)
     {
+        $mutuelle = Auth::guard('mutuelles')->user();
+
+        if (!$mutuelle) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Accès refusé.'], Response::HTTP_FORBIDDEN);
+            }
+            abort(Response::HTTP_FORBIDDEN, 'Accès refusé.');
+        }
+
         return view('mutuelles.home');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::guard('mutuelles')->logout();
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Déconnexion réussie.'], Response::HTTP_OK);
+        }
 
         return redirect('/');
     }
 
-    public function show(Mutuelles $mutuelle)
+    public function show(Request $request, Mutuelles $mutuelle)
     {
+        if ($request->wantsJson()) {
+            return response()->json(['mutuelle' => $mutuelle], Response::HTTP_OK);
+        }
         return view('mutuelles.show', compact('mutuelle'));
     }
 
-    /**
-     * Affiche le formulaire d'édition d'une mutuelle.
-     */
-    public function edit(Mutuelles $mutuelle)
+    public function edit(Request $request, Mutuelles $mutuelle)
     {
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Accès de la page edit de la mutuelle',
+                'mutuelle' => $mutuelle
+            ], Response::HTTP_OK);
+        }
         return view('mutuelles.edit', compact('mutuelle'));
     }
 
-    /**
-     * Met à jour une mutuelle existante.
-     */
     public function update(Request $request, Mutuelles $mutuelle)
     {
         $request->validate([
@@ -125,40 +170,54 @@ class MutuelleController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json([
-            'message' => 'Mutuelle mise à jour avec succès.',
-            'mutuelle' => $mutuelle
-        ], 200);
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Mutuelle mise à jour avec succès.', 'mutuelle' => $mutuelle], Response::HTTP_OK);
+        }
+
+        return redirect()->route('mutuelle.home')->with('status', 'Mutuelle mise à jour avec succès.');
     }
 
-    /**
-     * Supprime une mutuelle.
-     */
-    public function destroy(Mutuelles $mutuelle)
+    public function destroy(Request $request, Mutuelles $mutuelle)
     {
-        if (auth('mutuelles')->id() !== $mutuelle->id) {
-            return response()->json(['error' => 'Action non autorisée.'], 403);
+        if (Auth::guard('mutuelles')->id() !== $mutuelle->id) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Action non autorisée.'], Response::HTTP_FORBIDDEN);
+            }
+            abort(Response::HTTP_FORBIDDEN, 'Action non autorisée.');
         }
 
         $mutuelle->delete();
 
-        return response()->json([
-            'message' => 'Mutuelle supprimée avec succès.',
-            'mutuelle_id' => $mutuelle->id
-        ], 200);
-    }
-    public function listeClients()
-{
-    $mutuelle = Auth::guard('mutuelles')->user();
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Mutuelle supprimée avec succès.', 'mutuelle_id' => $mutuelle->id], Response::HTTP_OK);
+        }
 
-    $clients = $mutuelle->clients;
-
-    foreach ($clients as $client) {
-        $client->numero_securite_sociale = Crypt::decryptString($client->numero_securite_sociale_encrypted);
-        $client->rib = Crypt::decryptString($client->rib_encrypted);
-        $client->historique_medical = Crypt::decryptString($client->historique_medical_encrypted ?? '') ?? 'Non renseigné';
+        return redirect()->route('mutuelle.home')->with('status', 'Mutuelle supprimée avec succès.');
     }
 
-    return view('mutuelles.client', compact('clients'));
-}
+    public function listeClients(Request $request)
+    {
+        $mutuelle = Auth::guard('mutuelles')->user();
+
+        if (!$mutuelle) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Accès refusé.'], Response::HTTP_FORBIDDEN);
+            }
+            abort(Response::HTTP_FORBIDDEN, 'Accès refusé.');
+        }
+
+        $clients = $mutuelle->clients;
+
+        foreach ($clients as $client) {
+            $client->numero_securite_sociale = Crypt::decryptString($client->numero_securite_sociale_encrypted);
+            $client->rib = Crypt::decryptString($client->rib_encrypted);
+            $client->historique_medical = Crypt::decryptString($client->historique_medical_encrypted ?? '') ?? 'Non renseigné';
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json(['clients' => $clients], Response::HTTP_OK);
+        }
+
+        return view('mutuelles.client', compact('clients'));
+    }
 }
