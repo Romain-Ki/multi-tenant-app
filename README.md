@@ -21,62 +21,83 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 - [Middleware et Authentification](#middleware-et-authentification)
 
 ---
+# Documentation API
 
-# Documentation des Routes
+## ✅ Routes générales
 
-> **Note** : Toutes les routes API attendent et renvoient des données **au format JSON**, sauf indication contraire pour les routes affichant directement du HTML (formulaires).
-
----
-
-## Routes publiques
-
-| Méthode | URL         | Nom        | Description                        | Entrée attendue | Sortie attendue |
-|:--------|:------------|:-----------|:-----------------------------------|:----------------|:----------------|
-| GET     | `/`          | login      | Page d'accueil (`welcome.blade.php`) | Aucune          | HTML            |
-| GET     | `/mutuelles` | mutuelles  | Liste des mutuelles disponibles    | Aucune          | JSON            |
+| Type de requête | URL               | Donnée d'entrée | Donnée de sortie          |
+|-----------------|-------------------|-----------------|---------------------------|
+| GET             | `/`               | -               | HTML                      |
+| GET             | `/mutuelles`      | -               | JSON [{ "id": "UUID", "nom": "String"}, ...] |
 
 ---
 
-## Routes Client
+## ✅ Routes Mutuelles
 
-| Méthode | URL               | Nom              | Description                           | Entrée attendue             | Sortie attendue |
-|:--------|:------------------|:-----------------|:--------------------------------------|:-----------------------------|:----------------|
-| GET     | `/client/login`    | client.login     | Formulaire de connexion client       | Aucune                       | HTML              |
-| POST    | `/client/login`    | client.login     | Traitement de la connexion client    | `{ "email_contact": string, "password": string }` | JSON |
-| GET     | `/register`        | clients.register | Formulaire d'inscription client      | Aucune                       | HTML              |
-| POST    | `/register`        | clients.store    | Traitement de l'inscription client   | `{ "nom": string, "prenom": string, "numero_securite_sociale_encrypted": string (max 15 char),  "email": string, "password": string (min 6 char), "telephone": string, "adresse": string, "rib_encrypted": string (max 35 char), "historique_medical_encrypted": string}` | JSON            |
-| GET     | `/client/logout`   | client.logout    | Déconnexion du client                | Aucune                       | JSON              |
-| GET     | `/client/home`     | client.home      | Accès au tableau de bord client (authentifié) | Aucune              | HTML              |
-
----
-
-## Routes Mutuelle
-
-| Méthode | URL                                 | Nom                                 | Description                                               | Entrée attendue             | Sortie attendue |
-|:--------|:------------------------------------|:------------------------------------|:----------------------------------------------------------|:-----------------------------|:----------------|
-| GET     | `/mutuelle/login`                   | mutuelles.login                    | Formulaire de connexion mutuelle                         | Aucune                       | HTML            |
-| POST    | `/mutuelle/login`                   | mutuelle.login                     | Traitement de la connexion mutuelle                      | `{ "email_contact": string, "password": string }` | JSON            |
-| GET     | `/mutuelle/logout`                  | mutuelle.logout                    | Déconnexion de la mutuelle                               | Aucune                       | JSON            |
-| GET     | `/mutuelle/home`                    | mutuelle.home                      | Tableau de bord de la mutuelle (authentifié)             | Aucune                       | HTML            |
-| GET     | `/mutuelles/create`                 | mutuelles.create                   | Formulaire de création de mutuelle                      | Aucune                       | HTML            |
-| POST    | `/mutuelles`                        | mutuelles.store                    | Enregistrement d'une mutuelle                           | `{ "nom": string, "email_contact": string, "password": string }` | JSON            |
-| GET     | `/mutuelles/{mutuelle}`             | mutuelles.show                     | Détail d'une mutuelle                                    | ID en URL                    | JSON            |
-| GET     | `/mutuelles/{mutuelle}/edit`         | mutuelles.edit                     | Formulaire d'édition d'une mutuelle                      | ID en URL                    | HTML            |
-| PUT     | `/mutuelles/{mutuelle}`             | mutuelles.update                   | Mise à jour d'une mutuelle                               | `{ "nom": string, "email_contact": string, "password": string (optionnel) }` | JSON            |
-| DELETE  | `/mutuelles/{mutuelle}`             | mutuelles.destroy                  | Suppression d'une mutuelle                               | ID en URL                    | JSON            |
-| POST    | `/mutuelle/register`                | mutuelle.register                  | Enregistrement d'une mutuelle via formulaire             | `{ "nom": string, "email_contact": string, "password": string }` | JSON            |
-| GET     | `/mutuelle/searchClient/{numero}`   | mutuelle.searchClientByNumeroSocial | Recherche d'un client via numéro de sécurité sociale (authentifié) | Numéro en URL         | JSON            |
-| GET     | `/mutuelle/clients`                 | mutuelle.clients                   | Liste des clients liés à la mutuelle (authentifié)       | Aucune                       | JSON            |
+| Type de requête | URL                               | Donnée d'entrée  | Donnée de sortie         |
+|-----------------|-----------------------------------|------------------|--------------------------|
+| GET             | `/mutuelle/login`                 | -                | HTML                     | - |
+| POST            | `/mutuelle/login`                 | voir détail      | HTML                     | - |
+| GET             | `/mutuelles/create`               | -                | HTML                     | - |
+| POST            | `/mutuelles/create`               | voir détail      | HTML                     | - |
+| GET             | `/mutuelle/logout`                | -                | HTML                     | - |
+| GET             | `/mutuelle/home`                  | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
+| GET             | `/mutuelles/{mutuelle_uuid}`      | -                | HTML                     | - |
+| GET             | `/mutuelles/{mutuelle_uuid}/edit` | -                | HTML                     | - |
+| PUT             | `/mutuelles/{mutuelle_uuid}`      | -                | HTML                     | - |
+| DELETE          | `/mutuelles/{mutuelle}`           | -                | HTML                     | - |
+| GET             | `/mutuelle/searchClient/{numero}` | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
+| GET             | `/mutuelle/clients`               | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
 
 ---
 
-## Remarques
+## ✅ Routes Clients
 
-- Les routes de type `GET` affichant un formulaire ou un tableau de bord rendent **directement du HTML**.
-- Toutes les routes d'actions (`POST`, `PUT`, `DELETE`, certaines `GET`) traitent des données JSON en entrée et répondent avec du JSON (messages de succès, erreurs, ou données).
-- Pour récuperer du json depuis un `GET` il est necessaire d'ajouter un header `Accept`:`application/json` dans la requete
+| Type de requête | URL                      | Donnée d'entrée                       | Donnée de sortie          |
+|-----------------|--------------------------|---------------------------------------|---------------------------|
+| GET             | `/client/login`          | -                                     | HTML                      | - |
+| POST            | `/client/login`          | voir détail                           | HTML                      | - |
+| GET             | `/register`              | -                                     | HTML                      | - |
+| POST            | `/register`              | voir détail                           | HTML                      | - |
+| GET             | `/client/home`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| GET             | `/client/logout`         | -                                     | HTML                      | - |
 
 ---
+
+## 📥 Détail des formulaires
+
+### 🔹 POST Login (Mutuelle / Client)
+- **Champs attendus :**
+  - `email_contact` (string)
+  - `password` (string)
+
+### 🔹 POST Register (Mutuelle)
+- **Champs attendus :**
+  - `nom` (string)
+  - `email_contact` (email unique)
+  - `password` (string, min:6)
+  - `password_confirmation` (string)
+
+### 🔹 POST Register (Client)
+- **Champs attendus :**
+  - `nom` (string)
+  - `prenom` (string)
+  - `numero_securite_sociale_encrypted` (string)
+  - `email` (email unique)
+  - `password` (string, min:6)
+  - `password_confirmation` (string)
+  - `telephone` (string)
+  - `adresse` (string)
+  - `rib_encrypted` (string)
+  - `historique_medical_encrypted` (nullable string)
+  - `mutuelle_id` (UUID)
+
+---
+
+## 🔍 Remarques techniques
+
+- Toutes les routes **GET** rendent du **HTML** ou du **JSON** en mettant le header `accept`:`application/json` dans la requête.
+- L'accès à certaines routes est **protégé par les middlewares** `auth:mutuelles` ou `auth:clients` dependant du type d'authentification.
 
 ## Base de données
 
