@@ -52,7 +52,7 @@ class ClientController extends Controller
                 return redirect()->back()->withErrors('Ce numéro de sécurité sociale est déjà utilisé.');
             }
 
-            if (Clients::where('rib_hashed', $rib_hash)->exists()) {
+            if (Clients::where('rib_encrypted', $rib_hash)->exists()) {
                 if ($request->wantsJson()) {
                     return response()->json(['message' => 'Ce RIB est déjà enregistré.'], Response::HTTP_CONFLICT);
                 }
@@ -71,7 +71,7 @@ class ClientController extends Controller
                 'telephone' => $validated['telephone'],
                 'adresse' => $validated['adresse'],
                 'rib_encrypted' => Crypt::encryptString($validated['rib_encrypted']),
-                'rib_hashed' => $rib_hash,
+
                 'historique_medical_encrypted' => Crypt::encryptString($validated['historique_medical_encrypted'] ?? ''),
             ]);
 

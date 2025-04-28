@@ -32,11 +32,6 @@ class Mutuelles extends Authenticatable
         return $this->hasMany(OffreSantes::class);
     }
 
-    public function findOrFail($id)
-    {
-        return $this->hasOne('App\Models\Mutuelles', 'id', 'id');
-    }
-
     protected static function boot()
     {
         parent::boot();
