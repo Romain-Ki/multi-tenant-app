@@ -25,7 +25,8 @@ class ClientController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
-            'numero_securite_sociale_encrypted' => 'required|string|max:15',
+            'mutuelle_id' => 'required|uuid',
+            'numero_securite_sociale_encrypted' => 'required|string|max:15', // ATTENTION on corrige ça plus bas
             'email' => 'required|email|unique:clients,email',
             'password' => 'required|string|min:6|confirmed',
             'telephone' => 'required|string|max:20',
@@ -39,11 +40,10 @@ class ClientController extends Controller
             'id' => Str::uuid(),
             'nom' => $validated['nom'],
             'prenom' => $validated['prenom'],
-            'mutuelle_id' => $request->mutuelle_id,
-            'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']),
-            'numero_securite_sociale_hashed' => hash('sha256', $validated['numero_securite_sociale_encrypted']),
+            'mutuelle_id' => $validated['mutuelle_id'],
+            'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']), // cryptage à l'insertion
             'email' => $validated['email'],
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($validated['password']),
             'telephone' => $validated['telephone'],
             'adresse' => $validated['adresse'],
             'rib_encrypted' => Crypt::encryptString($validated['rib_encrypted']),
@@ -93,5 +93,60 @@ class ClientController extends Controller
         Auth::guard('clients')->logout();
 
         return redirect('/');
+    }
+    public function editProfile()
+    {
+        $client = Auth::guard('clients')->user();
+
+        $mutuelles = Mutuelles::all();
+
+
+        return view('clients.edit-profile', compact('client', 'mutuelles'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $client = Auth::guard('clients')->user();
+
+        $validated = $request->validate([
+            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'telephone' => 'required|string|max:20',
+            'adresse' => 'required|string|max:255',
+            'mutuelle_id' => 'required|uuid',
+            'password' => 'nullable|string|min:6|confirmed', // password optionnel et confirmé
+        ]);
+
+        // Mise à jour des informations de base
+        $client->prenom = $validated['prenom'];
+        $client->nom = $validated['nom'];
+        $client->email = $validated['email'];
+        $client->telephone = $validated['telephone'];
+        $client->adresse = $validated['adresse'];
+        $client->mutuelle_id = $validated['mutuelle_id'];
+
+        // Mise à jour du mot de passe seulement si un nouveau mot de passe est saisi
+        if (!empty($validated['password'])) {
+            $client->password = Hash::make($validated['password']);
+        }
+
+        $client->save();
+
+        return redirect()->route('client.home')->with('status', 'Profil mis à jour avec succès !');
+    }
+
+    // Supprimer (Delete) un utilisateur
+    public function destroy($id)
+    {
+        $client = Clients::find($id);
+
+        if (!$client) {
+            return response()->json(['message' => 'Hmm client introuvable en base'], 404);
+        }
+
+        $client->delete();
+
+        return response()->json(['message' => 'Utilisateur supprimé']);
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Tableau de Bord | {{ auth()->user()->nom }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
@@ -16,7 +16,7 @@
         <div class="container d-flex justify-content-between align-items-center">
             <h1 class="h3 m-0">Tableau de bord de {{ auth()->user()->nom }}</h1>
             <nav>
-                <a href="#" class="text-white text-decoration-none me-3">Mon Profil</a>
+                <a href="{{ route('mutuelles.edit',  auth()->user()->id) }}" class="text-white text-decoration-none me-3">Mon Profil</a>
                 <a href="{{ route('mutuelle.logout') }}" class="btn btn-outline-light btn-sm">Déconnexion</a>
             </nav>
         </div>
@@ -82,9 +82,9 @@
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(event) {
             event.preventDefault();
-    
+
             const input = document.getElementById('searchInput').value.trim();
-    
+
             if (input.length > 0) {
                 const route = "{{ route('mutuelle.searchClientByNumeroSocial', ['numero' => 'REPLACE_UUID']) }}";
                 const redirectUrl = route.replace('REPLACE_UUID', encodeURIComponent(input));

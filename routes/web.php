@@ -18,8 +18,6 @@ Route::get('/mutuelle/login', [MutuelleController::class, 'loginView'])->name('m
 Route::get('/mutuelle/logout', [MutuelleController::class, 'logout'])->name('mutuelle.logout');
 Route::get('/client/login', [ClientController::class, 'showLoginForm'])->name('client.login');
 
-Route::get('/register', [ClientController::class, 'create'])->name('clients.register'); // formulaire
-
 Route::get('/client/logout', [ClientController::class, 'logout'])->name('client.logout');
 
 Route::middleware('auth:clients')
@@ -34,6 +32,7 @@ Route::get('/mutuelles/{mutuelle}/edit', [MutuelleController::class, 'edit'])->n
 
 Route::post('/mutuelle/register', [MutuelleController::class, 'register'])->name('mutuelle.register');
 Route::post('/mutuelle/login', [MutuelleController::class, 'login'])->name('mutuelle.login');
+Route::post('/client/register', [ClientController::class, 'register'])->name('client.register');
 Route::post('/mutuelles', [MutuelleController::class, 'store'])->name('mutuelles.store');
 Route::post('/register', [ClientController::class, 'register'])->name('clients.store');
 Route::middleware('auth:mutuelles')->group(function () {
@@ -48,4 +47,10 @@ Route::get('/mutuelle/logout', [MutuelleController::class, 'logout'])->name('mut
 
 Route::middleware(['auth:mutuelles'])->group(function () {
     Route::get('/mutuelle/clients', [MutuelleController::class, 'listeClients'])->name('mutuelle.clients');
+});
+
+Route::middleware('auth:clients')->group(function () {
+    Route::get('/client/edit', [ClientController::class, 'editProfile'])->name('client.editProfile');
+    Route::put('/client/profile', [ClientController::class, 'updateProfile'])->name('client.updateProfile');
+    Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('client.deleteProfile');
 });

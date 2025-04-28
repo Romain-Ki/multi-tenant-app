@@ -21,20 +21,31 @@
     <div class="bg-white p-6 rounded shadow-md w-full max-w-xl">
     <h3 class="text-lg font-bold mb-4">Vos informations personnelles</h3>
 
-    <ul class="space-y-2">
-        <li><strong>Email :</strong> {{ $client->email }}</li>
-        <li><strong>Téléphone :</strong> {{ $client->telephone }}</li>
-        <li><strong>Adresse :</strong> {{ $client->adresse }}</li>
-        <li><strong>Numéro de Sécurité Sociale :</strong> {{ $client->numero_securite_sociale }}</li>
-        <li><strong>RIB :</strong> {{ $client->rib }}</li>
-        <li><strong>Historique Médical :</strong> {{ $client->historique_medical ?: 'Non renseigné' }}</li>
-        <li><strong>Mutuelle :</strong> {{ $client->mutuelle->nom ?? 'Non associée' }}</li>
-    </ul>
-</div>
+        <ul class="space-y-2 mb-6">
+            <li><strong>Email :</strong> {{ $client->email }}</li>
+            <li><strong>Téléphone :</strong> {{ $client->telephone }}</li>
+            <li><strong>Adresse :</strong> {{ $client->adresse }}</li>
+            <li><strong>Numéro de Sécurité Sociale :</strong> {{ $client->numero_securite_sociale }}</li>
+            <li><strong>RIB :</strong> {{ $client->rib }}</li>
+            <li><strong>Historique Médical :</strong> {{ $client->historique_medical ?: 'Non renseigné' }}</li>
+            <li><strong>Mutuelle :</strong> {{ $client->mutuelle->nom ?? 'Non associée' }}</li>
+        </ul>
 
-        
-        
+        <div class="flex space-x-4">
+            <a href="{{ route('client.editProfile')}}" class="btn btn-warning">
+
+                Modifier mon profil
+            </a>
+
+            <form action="{{ route('client.deleteProfile', ['id' => $client->id]) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Supprimer mon compte
+                </button>
+            </form>
+        </div>
+    </div>
     </main>
-
 </body>
 </html>
