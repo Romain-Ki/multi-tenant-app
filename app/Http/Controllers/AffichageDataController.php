@@ -10,6 +10,12 @@ class AffichageDataController extends Controller
     {
         $mutuelles = Mutuelles::all();
 
+        if (request()->wantsJson()) {
+            return response()->json([
+                'mutuelles' => $mutuelles
+            ]);
+        }
+
         return view('affichageData.mutelles', compact('mutuelles'));
     }
 }

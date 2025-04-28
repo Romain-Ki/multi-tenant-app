@@ -12,16 +12,14 @@
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Email de contact</th>
-                    <th>Créée le</th>
+                    <th>Mutuelle id</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($mutuelles as $mutuelle)
                     <tr>
                         <td>{{ $mutuelle->nom }}</td>
-                        <td>{{ $mutuelle->email_contact ?? 'N/A' }}</td>
-                        <td>{{ $mutuelle->created_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ $mutuelle->id }}</td>
                     </tr>
                 @endforeach
             </tbody>

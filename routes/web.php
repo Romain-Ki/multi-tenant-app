@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('login');
 
-// Route::get('/mutuelles', [AffichageDataController::class, 'mutelles'])->name('mutuelles');
+Route::get('/mutuelles', [AffichageDataController::class, 'mutelles'])->name('mutuelles');
 
 Route::middleware('auth:mutuelles')
     ->get('/mutuelle/home', [MutuelleController::class, 'homeView'])->name('mutuelle.home');
