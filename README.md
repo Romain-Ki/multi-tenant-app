@@ -48,8 +48,8 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 | GET             | `/mutuelle/login`                 | -                | HTML                     | - |
 | POST            | `/mutuelle/login`                 | email_contact: "string", password: "string" | HTML         | - |
 | GET             | `/mutuelle/logout`                | -                | HTML                     | - |
-| GET             | `/mutuelles/create`               | -                | HTML                     | - |
-| POST            | `/mutuelles/create`               | nom: "string", email_contact: "string", password: "string", password_confirmation: "string" | HTML                     | - |
+| GET             | `/mutuelles/register`               | -                | HTML                     | - |
+| POST            | `/mutuelles/register`               | nom: "string", email_contact: "string", password: "string", password_confirmation: "string" | HTML                     | - |
 | GET             | `/mutuelles/{mutuelle_uuid}`      | -                | JSON (Mutuelle)          | - |
 | GET             | `/mutuelles/{mutuelle_uuid}/edit` | -                | HTML                     | - |
 | PUT             | `/mutuelles/{mutuelle_uuid}`      | nom: "string", email_contact: "string", password: "string" | HTML       | *(protégé par middleware `auth:mutuelles`)*  |
