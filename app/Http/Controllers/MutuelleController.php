@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 class MutuelleController extends Controller
 {
@@ -93,4 +94,71 @@ class MutuelleController extends Controller
 
         return redirect('/');
     }
+
+    public function show(Mutuelles $mutuelle)
+    {
+        return view('mutuelles.show', compact('mutuelle'));
+    }
+
+    /**
+     * Affiche le formulaire d'édition d'une mutuelle.
+     */
+    public function edit(Mutuelles $mutuelle)
+    {
+        return view('mutuelles.edit', compact('mutuelle'));
+    }
+
+    /**
+     * Met à jour une mutuelle existante.
+     */
+    public function update(Request $request, Mutuelles $mutuelle)
+    {
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'email_contact' => 'nullable|email|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $mutuelle->update([
+            'nom' => $request->nom,
+            'email_contact' => $request->email_contact,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'message' => 'Mutuelle mise à jour avec succès.',
+            'mutuelle' => $mutuelle
+        ], 200);
+    }
+
+    /**
+     * Supprime une mutuelle.
+     */
+    public function destroy(Mutuelles $mutuelle)
+    {
+        if (auth('mutuelles')->id() !== $mutuelle->id) {
+            return response()->json(['error' => 'Action non autorisée.'], 403);
+        }
+
+        $mutuelle->delete();
+
+        return response()->json([
+            'message' => 'Mutuelle supprimée avec succès.',
+            'mutuelle_id' => $mutuelle->id
+        ], 200);
+    }
+    public function listeClients()
+{
+    $mutuelle = Auth::guard('mutuelles')->user();
+
+    $clients = $mutuelle->clients;
+
+    foreach ($clients as $client) {
+        $client->numero_securite_sociale = Crypt::decryptString($client->numero_securite_sociale_encrypted);
+        $client->rib = Crypt::decryptString($client->rib_encrypted);
+        $client->historique_medical = Crypt::decryptString($client->historique_medical_encrypted ?? '') ?? 'Non renseigné';
+    }
+
+    return view('mutuelles.client', compact('clients'));
+}
 }

@@ -52,14 +52,9 @@
             </div>
 
             <!-- Demandes en attente -->
-            <div class="col-md-4">
-                <div class="card shadow-lg rounded-4 h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Demandes en attente</h5>
-                        <p class="card-text">Suivez l'état de vos demandes de remboursement.</p>
-                        <a href="#" class="btn btn-primary">Voir les demandes</a>
-                    </div>
-                </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="font-semibold text-lg mb-2">Clients</h3>
+                <a href="{{ route('mutuelle.clients') }}" class="text-blue-500 hover:underline">Voir les clients</a>
             </div>
 
             <!-- Statistiques -->
