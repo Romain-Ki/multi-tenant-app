@@ -9,6 +9,9 @@ use App\Http\Controllers\ClientController;
 Route::post('/mutuelle/register', [MutuelleController::class, 'register'])->name('mutuelle.register');
 Route::post('/mutuelle/login', [MutuelleController::class, 'login'])->name('mutuelle.login');
 
+Route::post('/client/login', [ClientController::class, 'login'])->name('client.login');
+Route::post('/client/register', [ClientController::class, 'register'])->name('client.register');
+
 Route::middleware('auth:mutuelles')->group(function () {
     Route::put('/mutuelles/{mutuelle}', [MutuelleController::class, 'update'])->name('mutuelles.update');
     Route::delete('/mutuelles/{mutuelle}', [MutuelleController::class, 'destroy'])->name('mutuelles.destroy');

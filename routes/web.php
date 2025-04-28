@@ -22,9 +22,6 @@ Route::get('/mutuelle/logout', function () {
 })->name('mutuelle.logout');
 Route::get('/client/login', [ClientController::class, 'showLoginForm'])->name('client.login');
 
-
-Route::get('/register', [ClientController::class, 'create'])->name('clients.register'); // formulaire
-
 Route::get('/client/logout', function () {
     Auth::guard('clients')->logout();
 
@@ -44,6 +41,7 @@ Route::get('/mutuelles/{mutuelle}/edit', [MutuelleController::class, 'edit'])->n
 
 Route::post('/mutuelle/register', [MutuelleController::class, 'register'])->name('mutuelle.register');
 Route::post('/mutuelle/login', [MutuelleController::class, 'login'])->name('mutuelle.login');
+Route::post('/client/register', [ClientController::class, 'register'])->name('client.register');
 Route::post('/mutuelles', [MutuelleController::class, 'store'])->name('mutuelles.store');
 Route::post('/register', [ClientController::class, 'register'])->name('clients.store');
 Route::middleware('auth:mutuelles')->group(function () {

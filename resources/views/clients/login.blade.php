@@ -71,7 +71,7 @@
         </form>
 
         <!-- Formulaire Inscription -->
-        <form method="POST" action="{{ route('clients.register') }}" id="register-form" class="d-none mt-4">
+        <form method="POST" action="{{ route('client.register') }}" id="register-form" class="d-none mt-4">
             @csrf
 
             <div class="mb-3">
