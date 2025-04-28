@@ -26,33 +26,48 @@ class ClientController extends Controller
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'mutuelle_id' => 'required|uuid',
-            'numero_securite_sociale_encrypted' => 'required|string|max:15', // ATTENTION on corrige ça plus bas
+            'numero_securite_sociale_encrypted' => 'required|string|max:15|unique:clients,numero_securite_sociale_encrypted', // ATTENTION on corrige ça plus bas
             'email' => 'required|email|unique:clients,email',
             'password' => 'required|string|min:6|confirmed',
             'telephone' => 'required|string|max:20',
             'adresse' => 'required|string|max:255',
-            'rib_encrypted' => 'required|string|max:34',
+            'rib_encrypted' => 'required|string|max:34|unique:clients,rib_encrypted',
             'historique_medical_encrypted' => 'nullable|string',
+        ],[
+            'email.unique' => 'Cet email est déjà utilisé.',
+            'numero_securite_sociale_encrypted.unique' => 'Ce numéro de sécurité sociale est déjà utilisé.',
+            'rib_encrypted.unique' => 'Ce RIB est déjà enregistré.',
         ]);
 
-        // Cryptage des données sensibles
-        $client = new Clients([
-            'id' => Str::uuid(),
-            'nom' => $validated['nom'],
-            'prenom' => $validated['prenom'],
-            'mutuelle_id' => $validated['mutuelle_id'],
-            'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']), // cryptage à l'insertion
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'telephone' => $validated['telephone'],
-            'adresse' => $validated['adresse'],
-            'rib_encrypted' => Crypt::encryptString($validated['rib_encrypted']),
-            'historique_medical_encrypted' => Crypt::encryptString($validated['historique_medical_encrypted'] ?? ''),
-        ]);
+        $numero = hash('sha256', $request["numero_securite_sociale_encrypted"]);
+        
+        if (!Clients::where("numero_securite_sociale_hashed",$numero)->first()){
+            // Cryptage des données sensibles
+            $client = new Clients([
+                'id' => Str::uuid(),
+                'nom' => $validated['nom'],
+                'prenom' => $validated['prenom'],
+                'mutuelle_id' => $validated['mutuelle_id'],
+                'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']), 
+                'numero_securite_sociale_hashed' => hash('sha256', $request["numero_securite_sociale_encrypted"]),// cryptage à l'insertion
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'telephone' => $validated['telephone'],
+                'adresse' => $validated['adresse'],
+                'rib_encrypted' => Crypt::encryptString($validated['rib_encrypted']),
+                'historique_medical_encrypted' => Crypt::encryptString($validated['historique_medical_encrypted'] ?? ''),
+            ]);
+    
+            $client->save();
+            return redirect()->back()->with('status', 'Compte client créé avec succès !');
 
-        $client->save();
+        }
+        else{
+            return redirect()->back()->with('status', "Le compte n'est pas crée parce que le numéro est déjà pris");
 
-        return redirect()->back()->with('status', 'Compte client créé avec succès !');
+        }
+
+        return redirect()->back()->with('status', "Le compte n'est pas crée");
     }
 
     public function login(Request $request)
