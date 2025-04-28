@@ -9,11 +9,12 @@ class ValidateCsrfToken extends VerifyCsrfToken
 {
     protected $except = [
         // Authentification
-        'mutuelle/login',
-        'mutuelle/register',
+//        'mutuelle/login',
+//        'mutuelle/register',
 
-        // CRUD mutuelles
-        'mutuelle',           // POST
-        'mutuelles/*',         // PUT / DELETE / autres actions dynamiques
+        'mutuelle',
+        'mutuelles/*',
+        'client/*',
+        'clients/*',
     ];
 }
