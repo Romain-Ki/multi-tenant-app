@@ -38,14 +38,29 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 |-----------------|-----------------------------------|------------------|--------------------------|
 | GET             | `/mutuelle/home`                  | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
 | GET             | `/mutuelle/login`                 | -                | HTML                     | - |
-| POST            | `/mutuelle/login`                 | voir détail      | HTML                     | - |
+| POST            | `/mutuelle/login`                 | ```json
+{
+  "email_contact": "string",
+  "password": "string"
+}``` | HTML         | - |
 | GET             | `/mutuelle/logout`                | -                | HTML                     | - |
 | GET             | `/mutuelles/create`               | -                | HTML                     | - |
-| POST            | `/mutuelles/create`               | voir détail      | HTML                     | - |
+| POST            | `/mutuelles/create`               | ```json
+{
+  "nom": "string",
+  "email_contact": "string",
+  "password": "string",
+  "password_confirmation": "string"
+}``` | HTML                     | - |
 | GET             | `/mutuelles/{mutuelle_uuid}`      | -                | JSON (Mutuelle)          | - |
 | GET             | `/mutuelles/{mutuelle_uuid}/edit` | -                | HTML                     | - |
-| PUT             | `/mutuelles/{mutuelle_uuid}`      | -                | HTML                     | - |
-| DELETE          | `/mutuelles/{mutuelle}`           | -                | HTML                     | - |
+| PUT             | `/mutuelles/{mutuelle_uuid}`      | ```json
+{
+  "nom": "string",
+  "email_contact": "string",
+  "password": "string"
+}``` | HTML       | *(protégé par middleware `auth:mutuelles`)*  |
+| DELETE          | `/mutuelles/{mutuelle}`           | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)*  |
 | GET             | `/mutuelle/searchClient/{numero}` | -                | JSON (Client)            | *(protégé par middleware `auth:mutuelles`)* |
 | GET             | `/mutuelle/clients`               | -                | JSON ([Client], ...)     | *(protégé par middleware `auth:mutuelles`)* |
 
@@ -55,13 +70,40 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 
 | Type de requête | URL                      | Donnée d'entrée                       | Donnée de sortie          |
 |-----------------|--------------------------|---------------------------------------|---------------------------|
-| GET             | `/client/login`          | -                                     | HTML                      | - |
-| POST            | `/client/login`          | voir détail                           | HTML                      | - |
-| GET             | `/register`              | -                                     | HTML                      | - |
-| POST            | `/register`              | voir détail                           | HTML                      | - |
 | GET             | `/client/home`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
-| GET             | `/client/logout`         | -                                     | HTML                      | - |
-| GET             | `/client/logout`         | -                                     | HTML                      | - |
+| GET             | `/client/edit`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| PUT             | `/client/profile`        | ```json
+{
+  "nom": "string",
+  "prenom": "string",
+  "email": "string",
+  "telephone": "string",
+  "adresse": "string",
+  "rib_encrypted": "string",
+  "historique_medical_encrypted": "string"
+}``` | HTML                      | *(protégé par middleware `auth:clients`)* |
+| DELETE          | `/client/{client_id}`    | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
+| GET             | `/client/login`          | -                                     | HTML                      | - |
+| POST            | `/client/login`          | ```json
+{
+  "email": "string",
+  "password": "string"
+}``` | HTML                      | - |
+| GET             | `/register`              | -                                     | HTML                      | - |
+| POST            | `/register`              | ```json
+{
+  "nom": "string",
+  "prenom": "string",
+  "numero_securite_sociale_encrypted": "string",
+  "email": "string",
+  "password": "string",
+  "password_confirmation": "string",
+  "telephone": "string",
+  "adresse": "string",
+  "rib_encrypted": "string",
+  "historique_medical_encrypted": "nullable string",
+  "mutuelle_id": "UUID"
+}``` | HTML                      | - |
 | GET             | `/client/logout`         | -                                     | HTML                      | - |
 
 ---
