@@ -5,11 +5,11 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 ---
 
 ## Sommaire
-
-- [Routes disponibles](#routes-disponibles)
-  - [Routes publiques](#routes-publiques)
-  - [Routes client](#routes-client)
-  - [Routes mutuelle](#routes-mutuelle)
+- [Prérequis](#prérequis)
+- [Routes disponibles](#routes)
+  - [Routes publiques](#routes-générales)
+  - [Routes client](#routes-clients)
+  - [Routes mutuelle](#routes-mutuelles)
 - [Base de données](#base-de-données)
   - [mutuelles](#mutuelles)
   - [users](#users)
@@ -21,7 +21,15 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 - [Middleware et Authentification](#middleware-et-authentification)
 
 ---
-# Documentation API
+
+## Prérequis
+- PHP >= 8.0
+- Composer
+- MySQL ou SQLite
+- Node.js et NPM (pour les assets front-end)
+
+
+# Routes
 
 ## ✅ Routes générales
 
