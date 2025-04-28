@@ -20,41 +20,6 @@ class ClientController extends Controller
         return view('clients.login', compact('mutuelles'));
     }
 
-//    public function register(Request $request)
-//    {
-//        $validated = $request->validate([
-//            'nom' => 'required|string|max:255',
-//            'prenom' => 'required|string|max:255',
-//            'numero_securite_sociale_encrypted' => 'required|string|max:15',
-//            'email' => 'required|email|unique:clients,email',
-//            'password' => 'required|string|min:6|confirmed',
-//            'telephone' => 'required|string|max:20',
-//            'adresse' => 'required|string|max:255',
-//            'rib_encrypted' => 'required|string|max:34',
-//            'historique_medical_encrypted' => 'nullable|string',
-//        ]);
-//
-//        // Cryptage des données sensibles
-//        $client = new Clients([
-//            'id' => Str::uuid(),
-//            'nom' => $validated['nom'],
-//            'prenom' => $validated['prenom'],
-//            'mutuelle_id' => $request->mutuelle_id,
-//            'numero_securite_sociale_encrypted' => Crypt::encryptString($validated['numero_securite_sociale_encrypted']),
-////            'numero_securite_sociale_hashed' => hash('sha256', $validated['numero_securite_sociale_encrypted']),
-//            'email' => $validated['email'],
-//            'password' => Hash::make($request->password),
-//            'telephone' => $validated['telephone'],
-//            'adresse' => $validated['adresse'],
-//            'rib_encrypted' => Crypt::encryptString($validated['rib_encrypted']),
-//            'historique_medical_encrypted' => Crypt::encryptString($validated['historique_medical_encrypted'] ?? ''),
-//        ]);
-//
-//        $client->save();
-//
-//        return redirect()->back()->with('status', 'Compte client créé avec succès !');
-//    }
-
     public function register(Request $request)
     {
         $validated = $request->validate([
