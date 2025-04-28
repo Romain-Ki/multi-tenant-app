@@ -12,7 +12,7 @@ class ValidateCsrfToken extends VerifyCsrfToken
 //        'mutuelle/login',
 //        'mutuelle/register',
 
-        'mutuelle',
+        'mutuelle/*',
         'mutuelles/*',
         'client/*',
         'clients/*',
