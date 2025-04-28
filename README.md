@@ -34,8 +34,8 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 
 ## ✅ Routes Mutuelles
 
-| Type de requête | URL                               | Donnée d'entrée  | Donnée de sortie         |
-|-----------------|-----------------------------------|------------------|--------------------------|
+| Type de requête | URL                               | Donnée d'entrée  | Donnée de sortie         | Protéger ?                                  |
+|-----------------|-----------------------------------|------------------|--------------------------|---------------------------------------------|
 | GET             | `/mutuelle/home`                  | -                | HTML                     | *(protégé par middleware `auth:mutuelles`)* |
 | GET             | `/mutuelle/login`                 | -                | HTML                     | - |
 | POST            | `/mutuelle/login`                 | email_contact: "string", password: "string" | HTML         | - |
@@ -53,16 +53,14 @@ Ce projet est une application Laravel permettant aux **mutuelles** et aux **clie
 
 ## ✅ Routes Clients
 
-| Type de requête | URL                      | Donnée d'entrée                       | Donnée de sortie          |
-|-----------------|--------------------------|---------------------------------------|---------------------------|
+| Type de requête | URL                      | Donnée d'entrée                       | Donnée de sortie          | Protéger ?                                |
+|-----------------|--------------------------|---------------------------------------|---------------------------|-------------------------------------------|
 | GET             | `/client/home`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
 | GET             | `/client/edit`           | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
 | PUT             | `/client/profile`        | nom: "string", prenom: "string", email: "string", telephone: "string", adresse: "string", rib_encrypted: "string", historique_medical_encrypted: "string" | HTML                      | *(protégé par middleware `auth:clients`)* |
 | DELETE          | `/client/{client_id}`    | -                                     | HTML                      | *(protégé par middleware `auth:clients`)* |
 | GET             | `/client/login`          | -                                     | HTML                      | - |
 | POST            | `/client/login`          | email: "string", password: "string"   | HTML                      | - |
-| GET             | `/register`              | -                                     | HTML                      | - |
-| POST            | `/register`              | nom: "string", prenom: "string", numero_securite_sociale_encrypted: "string", email: "string", password: "string", password_confirmation: "string", telephone: "string", adresse: "string", rib_encrypted: "string", historique_medical_encrypted: "nullable string", mutuelle_id: "UUID" | HTML                      | - |
 | GET             | `/client/logout`         | -                                     | HTML                      | - |
 
 ---
